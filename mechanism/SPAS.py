@@ -1,6 +1,6 @@
 import numpy as np
-import common_metrics
-import data_process
+from mechanism.common_metrics import count_mae
+from mechanism.data_process import data_reader
 
 # Add Laplace noise
 
@@ -51,8 +51,10 @@ def agv_vardis(compute_num, window_size, published_stream, dim):
             if vardis > 0:
                 num_var += vardis
                 count_ += 1
-        
-        return num_var / count_
+        if count_ == 0:
+            return 0
+        else:
+            return num_var / count_
 
     else:
         for i in range(length_ - 2):
@@ -60,8 +62,10 @@ def agv_vardis(compute_num, window_size, published_stream, dim):
             if vardis > 0:
                 num_var += vardis
                 count_ += 1
-
-        return num_var / count_
+        if count_ == 0:
+            return 0
+        else:
+            return num_var / count_
 
 # Update the optimal C
 # epsilon_p: total privacy budegt in a sliding window
@@ -135,6 +139,7 @@ def SPAS_workflow(epsilon, sensitivity_s, sensitivity_p, raw_stream, c_init, win
             eps_consumed.append(0)
         
         optimal_c = update_optimalc(epsilon_p, sensitivity_p, windownum_updateE, window_size, published_stream, dim)
+        #print(optimal_c)
 
     return published_stream
 
@@ -147,9 +152,10 @@ def run_SPAS(epsilon, sensitivity_s, sensitivity_p, raw_stream, c_init, window_s
         MAE_ = 0
         for i in range(round_):
             published_result = SPAS_workflow(eps, sensitivity_s, sensitivity_p, raw_stream, c_init, window_size, windownum_warm, windownum_updateE, dim)
-            MAE_ += common_metrics.count_mae(raw_stream, published_result)
+            MAE_ += count_mae(raw_stream, published_result)
 
         MAE_ = MAE_ / round_
+        print("epsilon:", eps, "Done!")
     
         MAE_list.append(MAE_)
 
@@ -158,7 +164,7 @@ def run_SPAS(epsilon, sensitivity_s, sensitivity_p, raw_stream, c_init, window_s
 if __name__ == "__main__":
     
     dataset_name = ["unemployment"]
-    raw_stream = data_process.data_reader(dataset_name[0])
+    raw_stream = data_reader(dataset_name[0])
     epsilon = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
     sensitivity_s = 1
     sensitivity_p = 1

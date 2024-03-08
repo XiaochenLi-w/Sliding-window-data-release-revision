@@ -13,23 +13,26 @@ def add_noise(sensitivity, eps, histo, dim):
         
     return noisy_arr
 
-def uniform_workload(epsilon, sensitivity, raw_stream, window_size, dim):
+def sample_workload(epsilon, sensitivity, raw_stream, window_size, dim):
     length_ = len(raw_stream)
     published_stream = []
 
     for i in range(length_):
-        tmp = add_noise(sensitivity, epsilon / window_size, raw_stream[i], dim)
-        published_stream.append(tmp)
-
+        if i % int(window_size) == 0:
+            tmp = add_noise(sensitivity, epsilon, raw_stream[i], dim)
+            published_stream.append(tmp)
+        else:
+            published_stream.append(published_stream[i - 1])
+        
     return published_stream
 
-def run_uniform(epsilon, sensitivity, raw_stream, window_size, dim, round_):
+def run_sample(epsilon, sensitivity, raw_stream, window_size, dim, round_):
     MAE_list = []
     
     for eps in epsilon:
         MAE_ = 0
         for i in range(round_):
-            published_result = uniform_workload(eps, sensitivity, raw_stream, window_size, dim)
+            published_result = sample_workload(eps, sensitivity, raw_stream, window_size, dim)
             MAE_ += count_mae(raw_stream, published_result)
 
         MAE_ = MAE_ / round_
@@ -49,6 +52,6 @@ if __name__ == "__main__":
     dim = 1
     round_ = 1
     
-    error_ = run_uniform(epsilon, sensitivity, raw_stream, window_size, dim, round_)
+    error_ = run_sample(epsilon, sensitivity, raw_stream, window_size, dim, round_)
     print(error_)
     
