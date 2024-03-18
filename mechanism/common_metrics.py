@@ -10,6 +10,9 @@ def count_mae(raw_result, published_result):
     error_sum = 0
 
     for i in range(published_time):
-        error_sum += abs(raw_result[i][0] - published_result[i][0])
+        if raw_result[i][0] == 0:
+            error_sum += 1
+        else:
+            error_sum += abs(raw_result[i][0] - published_result[i][0]) / raw_result[i][0]
     
     return error_sum / published_time

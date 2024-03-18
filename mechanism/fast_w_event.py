@@ -140,34 +140,61 @@ def publish(epsilon, sensitivity, raw_stream):
         
     return publish, publish_num
 
-def run_fast(epsilon, sensitivity, raw_stream, window_size, dim, round_):
+def run_fast(epsilon, sensitivity, raw_stream, window_size, dim, round_, Flag_ = 0):
 
     publish_num = 0
     res = [[0 for j in range(dim)] for i in range(len(raw_stream))]
     MAE_list = []
     
-    for eps in epsilon:
-        MAE_ = 0
-        for r in range(round_):
-            for t in range(0, len(raw_stream), window_size + 1):
+    if Flag_ == 0:
+        for eps in epsilon:
+            MAE_ = 0
+            for r in range(round_):
+                for t in range(0, len(raw_stream), window_size + 1):
 
-                end_index = min(t + window_size, len(raw_stream) - 1) + 1
-                for d in range(dim):  
-                    substream_of_dimension = []
-                    for i in range(t, end_index - 1):
-                        substream_of_dimension.append(raw_stream[i][d])
-                    fast = substream_of_dimension
-                    published, tmp_publish_num = publish(eps, sensitivity, fast)
-                    publish_num += tmp_publish_num / dim
+                    end_index = min(t + window_size, len(raw_stream) - 1) + 1
+                    for d in range(dim):  
+                        substream_of_dimension = []
+                        for i in range(t, end_index - 1):
+                            substream_of_dimension.append(raw_stream[i][d])
+                        fast = substream_of_dimension
+                        published, tmp_publish_num = publish(eps, sensitivity, fast)
+                        publish_num += tmp_publish_num / dim
 
-                    for i in range(len(published)):
-                        res[t + i][d] = published[i]
-            MAE_ += count_mae(raw_stream, res)
+                        for i in range(len(published)):
+                            res[t + i][d] = published[i]
+                MAE_ += count_mae(raw_stream, res)
 
-        MAE_ = MAE_ / round_
-        print("epsilon:", eps, "Done!")
+            MAE_ = MAE_ / round_
+            print("epsilon:", eps, "Done!")
 
-        MAE_list.append(MAE_)
+            MAE_list.append(MAE_)
+
+    else:
+        for w in window_size:
+            MAE_ = 0
+            for r in range(round_):
+                for t in range(0, len(raw_stream), w + 1):
+
+                    end_index = min(t + w, len(raw_stream) - 1) + 1
+                    for d in range(dim):  
+                        substream_of_dimension = []
+                        for i in range(t, end_index - 1):
+                            substream_of_dimension.append(raw_stream[i][d])
+                        fast = substream_of_dimension
+                        published, tmp_publish_num = publish(epsilon, sensitivity, fast)
+                        publish_num += tmp_publish_num / dim
+
+                        for i in range(len(published)):
+                            res[t + i][d] = published[i]
+                MAE_ += count_mae(raw_stream, res)
+
+            MAE_ = MAE_ / round_
+            print("window size:", w, "Done!")
+
+            MAE_list.append(MAE_)
+
+    print('FAST DONE!')
 
     return MAE_list
 

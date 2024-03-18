@@ -23,19 +23,36 @@ def uniform_workload(epsilon, sensitivity, raw_stream, window_size, dim):
 
     return published_stream
 
-def run_uniform(epsilon, sensitivity, raw_stream, window_size, dim, round_):
+def run_uniform(epsilon, sensitivity, raw_stream, window_size, dim, round_, Flag_ = 0):
     MAE_list = []
     
-    for eps in epsilon:
-        MAE_ = 0
-        for i in range(round_):
-            published_result = uniform_workload(eps, sensitivity, raw_stream, window_size, dim)
-            MAE_ += count_mae(raw_stream, published_result)
+    if Flag_ == 0:
+        for eps in epsilon:
+            MAE_ = 0
+            for i in range(round_):
+                published_result = uniform_workload(eps, sensitivity, raw_stream, window_size, dim)
+                MAE_ += count_mae(raw_stream, published_result)
 
-        MAE_ = MAE_ / round_
-        print("epsilon:", eps, "Done!")
-    
-        MAE_list.append(MAE_)
+            MAE_ = MAE_ / round_
+            print("epsilon:", eps, "Done!")
+        
+            MAE_list.append(MAE_)
+
+        print('uniform DONE!')
+
+    else:
+        for w in window_size:
+            MAE_ = 0
+            for i in range(round_):
+                published_result = uniform_workload(epsilon, sensitivity, raw_stream, w, dim)
+                MAE_ += count_mae(raw_stream, published_result)
+
+            MAE_ = MAE_ / round_
+            print("window size:", w, "Done!")
+        
+            MAE_list.append(MAE_)
+
+        print('uniform DONE!')
 
     return MAE_list
 
