@@ -6,7 +6,7 @@ from mechanism.data_process import data_reader
 
 class Pegasus:
 
-    DEBUG_FORCE_NEW_GROUP_EACH_TIMESTAMP = True
+    DEBUG_FORCE_NEW_GROUP_EACH_TIMESTAMP = False
     # smoother
     AVG_SMOOTHER = 0
     MEDIAN_SMOOTHER = 1

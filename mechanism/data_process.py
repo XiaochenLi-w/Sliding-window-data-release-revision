@@ -68,7 +68,7 @@ def data_reader(name):
 # old dataset
                     
     elif name == "F1d":
-        filename = "./dataset/old_data/ILINet.csv"
+        filename = "./dataset/old_data_ori/ILINet.csv"
         with open(filename, 'r', encoding='utf-8') as file_to_read:
             while True:
 
@@ -82,7 +82,7 @@ def data_reader(name):
                     data.append([int(tmp[-3])])
 
     elif name == "Dth":
-        filename = "./dataset/old_data/death.csv"
+        filename = "./dataset/old_data_ori/death.csv"
         with open(filename, 'r', encoding='utf-8') as file_to_read:
             while True:
 
@@ -96,7 +96,7 @@ def data_reader(name):
                     data.append([int(tmp[-6])])
 
     elif name == "Uem":
-        filename = "./dataset/old_data/unemployment.csv"
+        filename = "./dataset/old_data_ori/unemployment.csv"
         with open(filename, 'r', encoding='utf-8') as file_to_read:
             while True:
 
@@ -110,7 +110,7 @@ def data_reader(name):
                     data.append([int(tmp[-1])])
 
     elif name == "Fmd":
-        filename = "./dataset/old_data/flumd_output.csv"
+        filename = "./dataset/old_data_ori/flumd_output.csv"
         with open(filename, 'r', encoding='utf-8') as file_to_read:
             while True:
 
@@ -122,7 +122,7 @@ def data_reader(name):
                     data.append([int(i) for i in lines.split(',')])
 
     elif name == "Tdv":
-        filename = "./dataset/old_data/td_output.csv"
+        filename = "./dataset/old_data_ori/td_output.csv"
         with open(filename, 'r', encoding='utf-8') as file_to_read:
             while True:
 
@@ -134,7 +134,7 @@ def data_reader(name):
                     data.append([int(i) for i in lines.split(',')])
 
     elif name == "Tpt":
-        filename = "./dataset/old_data/tp_output.csv"
+        filename = "./dataset/old_data_ori/tp_output.csv"
         with open(filename, 'r', encoding='utf-8') as file_to_read:
             while True:
 
@@ -146,7 +146,7 @@ def data_reader(name):
                     data.append([int(i) for i in lines.split(',')])
     
     elif name == "Ret":
-        filename = "./dataset/old_data/retail_output.csv"
+        filename = "./dataset/old_data_ori/retail_output.csv"
         with open(filename, 'r', encoding='utf-8') as file_to_read:
             while True:
 
@@ -158,7 +158,7 @@ def data_reader(name):
                     data.append([int(i) for i in lines.split(',')])
     
     elif name == "Wcp":
-        filename = "./dataset/old_data/worldcup_output.csv"
+        filename = "./dataset/old_data_ori/worldcup_output.csv"
         with open(filename, 'r', encoding='utf-8') as file_to_read:
             while True:
 

@@ -12,7 +12,7 @@ def draw_heat_eps(error, datasetlist, epsilon_list):
     font={'family':'Times New Roman', 'weight':'bold'}
     # 
     #matplotlib.rcParams.update({'font.size': 8})
-    fig, axes_l = plt.subplots(nrows=2, ncols=4, sharey="row", figsize=(14, 9))
+    fig, axes_l = plt.subplots(nrows=2, ncols=4, sharey="row", figsize=(16, 9))
     #plt.subplots_adjust(hspace=0.1, wspace=0.1)
     #fig.set_size_inches(16, 9)
     # plt.subplots_adjust(bottom=1)
@@ -43,7 +43,7 @@ def draw_heat_eps(error, datasetlist, epsilon_list):
             if j == 0:
                 ax.set_ylabel('Datasets', fontsize =15, fontdict=font)
                 
-                datalist_shortname = ["Otp", "Dth", "Uem", "Flu", "Tdv", "Tpt", "Ret", "syn_uniform", "syn_mix"]
+                datalist_shortname = ["Otp", "Dth", "Uem", "syn1", "syn2", "Flu", "Tdv", "Tpt", "Ret"]
                 ax.set_yticks([i for i in range(len(datasetlist))])
                 ax.tick_params(left=True, right=False)
                 ax.set_yticklabels(datalist_shortname, fontsize = 10, fontdict=font)
@@ -77,7 +77,7 @@ def draw_heat_eps(error, datasetlist, epsilon_list):
     for l in clb1.ax.yaxis.get_ticklabels():
         l.set_family('Times New Roman')
         l.set_fontweight('bold')
-    clb1.ax.set_title(r"$\delta_{MAE}$", fontsize=10, fontdict=font)
+    clb1.ax.set_title(r"$\delta_{MRE}$", fontsize=10, fontdict=font)
     # clb.ax.set_aspect(8)
 
     cax2 = fig.add_axes([0.82, 0.26, 0.01, 0.9 * ax.get_position().height])
@@ -86,7 +86,7 @@ def draw_heat_eps(error, datasetlist, epsilon_list):
     for l in clb2.ax.yaxis.get_ticklabels():
         l.set_family('Times New Roman')
         l.set_fontweight('bold')
-    clb2.ax.set_title(r"$\delta_{MAE}$", fontsize=10, fontdict=font)
+    clb2.ax.set_title(r"$\delta_{MRE}$", fontsize=10, fontdict=font)
     clb2.ax.tick_params(labelsize=10)
     #clb2.locator = ticker.MaxNLocator(nbins=5)  # colorbar上的刻度值个数
     clb2.update_ticks()
@@ -95,7 +95,7 @@ def draw_heat_eps(error, datasetlist, epsilon_list):
     fig.subplots_adjust(left=0.076, bottom=0.258, right=0.813, top=0.775, wspace=0, hspace=0.379)
 
     plt.show()
-    fig.savefig("./fig/varying_eps.pdf")
+    #fig.savefig("./fig/varying_eps.pdf")
     
     #fig.savefig("./new_fig/heat_" + d + "_" + eval + ".pdf")
     
@@ -140,7 +140,7 @@ def draw_heat_w(error, datasetlist, window_size_list):
             if j == 0:
                 ax.set_ylabel('Datasets', fontsize =15, fontdict=font)
                 
-                datalist_shortname = ["Otp", "Dth", "Uem", "Flu", "Tdv", "Tpt", "Ret", "syn_uniform", "syn_mix"]
+                datalist_shortname = ["Otp", "Dth", "Uem", "syn1", "syn2", "Flu", "Tdv", "Tpt", "Ret"]
                 ax.set_yticks([i for i in range(len(datasetlist))])
                 ax.tick_params(left=True, right=False)
                 ax.set_yticklabels(datalist_shortname, fontsize = 10, fontdict=font)
@@ -174,7 +174,7 @@ def draw_heat_w(error, datasetlist, window_size_list):
     for l in clb1.ax.yaxis.get_ticklabels():
         l.set_family('Times New Roman')
         l.set_fontweight('bold')
-    clb1.ax.set_title(r"$\delta_{MAE}$", fontsize=10, fontdict=font)
+    clb1.ax.set_title(r"$\delta_{MRE}$", fontsize=10, fontdict=font)
     # clb.ax.set_aspect(8)
 
     cax2 = fig.add_axes([0.82, 0.26, 0.01, 0.9 * ax.get_position().height])
@@ -183,7 +183,7 @@ def draw_heat_w(error, datasetlist, window_size_list):
     for l in clb2.ax.yaxis.get_ticklabels():
         l.set_family('Times New Roman')
         l.set_fontweight('bold')
-    clb2.ax.set_title(r"$\delta_{MAE}$", fontsize=10, fontdict=font)
+    clb2.ax.set_title(r"$\delta_{MRE}$", fontsize=10, fontdict=font)
     clb2.ax.tick_params(labelsize=10)
     #clb2.locator = ticker.MaxNLocator(nbins=5)  # colorbar上的刻度值个数
     clb2.update_ticks()
@@ -192,7 +192,7 @@ def draw_heat_w(error, datasetlist, window_size_list):
     fig.subplots_adjust(left=0.076, bottom=0.258, right=0.813, top=0.775, wspace=0, hspace=0.379)
 
     plt.show()
-    fig.savefig("./fig/varying_w.pdf")
+    #fig.savefig("./fig/varying_w.pdf")
 
 
 if __name__ == "__main__":
@@ -210,13 +210,13 @@ if __name__ == "__main__":
     # draw on real datasets
     #datasetlist = ["Uem", 'Out', 'syn_mix']
     #datasetlist = ['nation']
-    datasets_list = ["F1d", "Dth", "Uem", "Fmd", "Tdv", "Tpt", "Ret", "syn_uniform", "syn_mix"]
+    datasets_list = ["F1d", "Dth", "Uem", "syn_uniform", "syn_mix", "Fmd", "Tdv", "Tpt", "Ret"]
     epsilon_list = [0.1, 0.3, 0.5, 0.7, 0.9]
     window_size_list = [40, 80, 120, 160, 200]
     
 
     # draw eps
-    with open("./output/error_eps9.pickle", "rb") as f:
+    with open("./output/error5.pickle", "rb") as f:
         error = pickle.load(f)
-    draw_heat_eps(error, datasets_list, epsilon_list)
-    #draw_heat_w(error, datasets_list, window_size_list)
+    #draw_heat_eps(error, datasets_list, epsilon_list)
+    draw_heat_w(error, datasets_list, window_size_list)

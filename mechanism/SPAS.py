@@ -87,22 +87,26 @@ def update_optimalc(epsilon_p, sensitivity_p, compute_num, window_size, publishe
 # Publish the data in the first window or first several windows
 
 def warm_up_stage(epsilon, sensitivity_p, raw_stream, c_init, window_size, window_num, dim):
-    c_init = int(epsilon * 15 + 5)
+    c_init = window_size / 20
     sample_interval = int(window_size / c_init)
     total_for_warmup = window_size * window_num
     published_stream = []
     eps_consumed = []
     epsilon_warmup = epsilon / c_init
 
+    svt_consumed = []
+
     for i in range(total_for_warmup):
         if i % sample_interval == 0:
             published_stream.append(add_noise(sensitivity_p, epsilon_warmup, raw_stream[i], dim))
             eps_consumed.append(epsilon_warmup)
+            svt_consumed.append(0)
         else:
             published_stream.append(published_stream[i - 1])
             eps_consumed.append(0)
+            svt_consumed.append(0)
 
-    return published_stream, eps_consumed
+    return published_stream, eps_consumed, svt_consumed
 
 # Compute the remaining epsilon at the last timestamp of a window
 
@@ -134,7 +138,7 @@ def SPAS_workflow(epsilon, sensitivity_s, sensitivity_p, raw_stream, c_init, win
     eps_2 = epsilon_s - eps_1
 
     # warm_up stage
-    published_stream, eps_consumed = warm_up_stage(epsilon, sensitivity_p, raw_stream, c_init, window_size, windownum_warm, dim)
+    published_stream, eps_consumed, svt_consumed = warm_up_stage(epsilon, sensitivity_p, raw_stream, c_init, window_size, windownum_warm, dim)
 
     optimal_c = update_optimalc(epsilon_p, sensitivity_p, windownum_updateE, window_size, published_stream, dim)
 
@@ -144,26 +148,35 @@ def SPAS_workflow(epsilon, sensitivity_s, sensitivity_p, raw_stream, c_init, win
     
     rho_ = add_noise(sensitivity_s / dim, eps_1, [0], 1)
     for i in range(start_, end_):
-        diff = count_dis(raw_stream[i], raw_stream[i - 1], dim)
-        v_ = add_noise(sensitivity_s / dim, eps_2 / (2 * optimal_c), [0], 1)
         eps_remain = compute_epsremain(epsilon_p, eps_consumed, window_size)
         T_ = optimal_c * sensitivity_p / epsilon_p
         #T_ = 10 * sensitivity_p
+
+        diff = count_dis(raw_stream[i], raw_stream[i - 1], dim)
+        v_ = add_noise(sensitivity_s / dim, eps_2 / (2 * optimal_c), [0], 1)
         
         first_sample_inwindow = find_firstsample(eps_consumed, window_size)
         if window_size - (i - first_sample_inwindow) <= int(eps_remain / (epsilon_p / optimal_c)):
-            tmp = add_noise(sensitivity_p, epsilon_p / optimal_c + epsilon_s, raw_stream[i], dim)
+            eps_svt_remain = compute_epsremain(eps_2, svt_consumed, (i - first_sample_inwindow + 1))
+            tmp = add_noise(sensitivity_p, eps_remain / (window_size - (i - first_sample_inwindow)) + eps_svt_remain / optimal_c, raw_stream[i], dim)
+            svt_consumed.append(eps_svt_remain / optimal_c)
+            published_stream.append(tmp)
+            eps_consumed.append(eps_remain / (window_size - (i - first_sample_inwindow)))
+
+        elif diff + v_[0] > T_ + rho_[0] and eps_remain >= (epsilon_p / optimal_c):
+            svt_consumed.append(eps_2 / optimal_c)
+            eps_svt_remain = compute_epsremain(eps_2, svt_consumed, window_size)
+            if eps_svt_remain > 0:
+                tmp = add_noise(sensitivity_p, epsilon_p / optimal_c + eps_svt_remain, raw_stream[i], dim)
+            else:
+                tmp = add_noise(sensitivity_p, epsilon_p / optimal_c, raw_stream[i], dim)
             published_stream.append(tmp)
             eps_consumed.append(epsilon_p / optimal_c)
-
-        elif diff + v_[0] > T_ + rho_[0] and eps_remain > (epsilon_p / optimal_c):
-            tmp = add_noise(sensitivity_p, epsilon_p / optimal_c, raw_stream[i], dim)
-            published_stream.append(tmp)
-            eps_consumed.append(epsilon_p / optimal_c)
-
+            
         else:
             published_stream.append(published_stream[i - 1])
             eps_consumed.append(0)
+            svt_consumed.append(0)
         
         optimal_c = update_optimalc(epsilon_p, sensitivity_p, windownum_updateE, window_size, published_stream, dim)
         #print(optimal_c)
