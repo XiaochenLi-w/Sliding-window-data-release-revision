@@ -56,7 +56,7 @@ class Pegasus:
                 # go
                 c_t = origStream_t[dim]
                 san_c_t = self.perturber(c_t, self.eps_p)
-                self.grouper(t, c_t, tempDataOfDim, self.eps_g)
+                self.grouper(t, c_t, tempDataOfDim)
                 # tempDataOfDim.perturbedStream_last_group.add(san_c_t) #  important. otherwise, smoother does not work correctly.
                 tempDataOfDim.perturbedStream_last_group_stat.append(san_c_t)
                 # 
@@ -93,7 +93,7 @@ class Pegasus:
     
 
 
-    def dev(trueStream_last_group, c_t):
+    def dev(self, trueStream_last_group, c_t):
         dev = 0
 
         average_count = (sum(trueStream_last_group) + c_t) / (len(trueStream_last_group) + 1)
@@ -104,7 +104,7 @@ class Pegasus:
         return dev
     
 
-    def grouper(self, t, c_t, tempDataDim, eps_g):
+    def grouper(self, t, c_t, tempDataDim):
         noisy_theta = 0
 
         #  Line 1-5  -- already done
