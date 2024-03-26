@@ -15,7 +15,7 @@ def count_mre(raw_result, published_result):
     for i in range(published_time):
         for j in range(dim):
             if raw_result[i][j] == 0:
-                error_sum += published_result[i][j]
+                error_sum += abs(published_result[i][j])
             else:
                 error_sum += abs(raw_result[i][j] - published_result[i][j]) / raw_result[i][j]
     

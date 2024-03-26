@@ -9,37 +9,37 @@ import mechanism.pegasus
 import mechanism.common_metrics
 import mechanism.data_process
 
-def run_method(method_name, epsilon_list, sensitivity_s, sensitivity_p, raw_stream, c_init, window_size, windownum_warm, windownum_updateE, dim, round_, Flag_ = 0):
+def run_method(method_name, epsilon_list, sensitivity_s, sensitivity_p, raw_stream, c_init, window_size, windownum_warm, windownum_updateE, round_, Flag_ = 0):
     if method_name == "spas":
-        error_ = mechanism.SPAS.run_SPAS(epsilon_list, sensitivity_s, sensitivity_p, raw_stream, c_init, window_size, windownum_warm, windownum_updateE, dim, round_, Flag_)
+        error_ = mechanism.SPAS.run_SPAS(epsilon_list, sensitivity_s, sensitivity_p, raw_stream, c_init, window_size, windownum_warm, windownum_updateE, round_, Flag_)
         
     elif method_name == "sample":
 
-        error_ = mechanism.sample.run_sample(epsilon_list, sensitivity_p, raw_stream, window_size, dim, round_, Flag_)
+        error_ = mechanism.sample.run_sample(epsilon_list, sensitivity_p, raw_stream, window_size, round_, Flag_)
 
     elif method_name == "uniform":
 
-        error_ = mechanism.uniform.run_uniform(epsilon_list, sensitivity_p, raw_stream, window_size, dim, round_, Flag_)
+        error_ = mechanism.uniform.run_uniform(epsilon_list, sensitivity_p, raw_stream, window_size, round_, Flag_)
     
     elif method_name == "dsat":
 
-        error_ = mechanism.dsat.run_dsat(epsilon_list, sensitivity_p, raw_stream, window_size, dim, round_, Flag_)
+        error_ = mechanism.dsat.run_dsat(epsilon_list, sensitivity_p, raw_stream, window_size, round_, Flag_)
 
     elif method_name == "pegasus":
 
-        error_ = mechanism.pegasus.run_pegasus(epsilon_list, sensitivity_p, raw_stream, window_size, dim, round_, Flag_)
+        error_ = mechanism.pegasus.run_pegasus(epsilon_list, sensitivity_p, raw_stream, window_size, round_, Flag_)
 
     elif method_name == "fast":
 
-        error_ = mechanism.fast_w_event.run_fast(epsilon_list, sensitivity_p, raw_stream, window_size, dim, round_, Flag_)
+        error_ = mechanism.fast_w_event.run_fast(epsilon_list, sensitivity_p, raw_stream, window_size, round_, Flag_)
 
     elif method_name == "bd":
 
-        error_ = mechanism.bd.run_bd(epsilon_list, sensitivity_p, raw_stream, window_size, dim, round_, Flag_)
+        error_ = mechanism.bd.run_bd(epsilon_list, sensitivity_p, raw_stream, window_size, round_, Flag_)
 
     elif method_name == "adapub":
         
-        error_ = mechanism.adapub.run_adapub(epsilon_list, sensitivity_p, raw_stream, window_size, dim, round_, Flag_)
+        error_ = mechanism.adapub.run_adapub(epsilon_list, sensitivity_p, raw_stream, window_size, round_, Flag_)
 
 
     return error_

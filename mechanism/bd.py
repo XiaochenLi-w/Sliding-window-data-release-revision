@@ -79,7 +79,8 @@ def bd_workflow(epsilon, sensitivity, ex, window_size, dim):
     return res
 
 
-def run_bd(epsilon, sensitivity, raw_stream, window_size, dim, round_, Flag_ = 0):
+def run_bd(epsilon, sensitivity, raw_stream, window_size, round_, Flag_ = 0):
+    dim = len(raw_stream[0])
     MAE_list = []
     
     if Flag_ == 0:

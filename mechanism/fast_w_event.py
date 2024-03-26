@@ -140,7 +140,8 @@ def publish(epsilon, sensitivity, raw_stream):
         
     return publish, publish_num
 
-def run_fast(epsilon, sensitivity, raw_stream, window_size, dim, round_, Flag_ = 0):
+def run_fast(epsilon, sensitivity, raw_stream, window_size, round_, Flag_ = 0):
+    dim = len(raw_stream[0])
 
     publish_num = 0
     res = [[0 for j in range(dim)] for i in range(len(raw_stream))]

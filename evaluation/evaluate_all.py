@@ -49,7 +49,7 @@ def run_all(epsilon_list, sensitivity_s, sensitivity_p, raw_stream, c_init, wind
 
 # run all methods with varying epsilon
     
-def run_allfix(epsilon_list, sensitivity_s, sensitivity_p, c_init, window_size, windownum_warm, windownum_updateE, dim, round_):
+def run_allfix(epsilon_list, sensitivity_s, sensitivity_p, c_init, window_size, windownum_warm, windownum_updateE, round_):
     methods_list = ['spas', 'sample', 'uniform', 'dsat', 'fast', 'bd', 'adapub', 'pegasus']
     datasets_list = ["F1d", "Dth", "Uem", "syn_uniform", "syn_mix", "Fmd", "Tdv", "Tpt", "Ret"]
 
@@ -62,7 +62,7 @@ def run_allfix(epsilon_list, sensitivity_s, sensitivity_p, c_init, window_size, 
     for i, dataset_name in enumerate(datasets_list):    
         raw_stream = run_def.run_dataset(dataset_name)
         for j, method_name in enumerate(methods_list):
-            err_tmp = run_def.run_method(method_name, epsilon_list, sensitivity_s, sensitivity_p, raw_stream, c_init, window_size, windownum_warm, windownum_updateE, dim, round_)
+            err_tmp = run_def.run_method(method_name, epsilon_list, sensitivity_s, sensitivity_p, raw_stream, c_init, window_size, windownum_warm, windownum_updateE, round_)
             for k in range(len(epsilon_list)):
                 err_all[i][k].append(err_tmp[k])
         print('********dataset', datasets_list[i], 'Done!********')
@@ -74,14 +74,14 @@ def run_allfix(epsilon_list, sensitivity_s, sensitivity_p, c_init, window_size, 
 
 # Only update part of results recorded in error.pickle
 
-def run_part(epsilon_list, sensitivity_s, sensitivity_p, c_init, window_size, windownum_warm, windownum_updateE, dim, round_):
-    methods_list = ['pegasus']
-    datasets_list = ["F1d", "Dth", "Uem", "syn_uniform", "syn_mix", "Fmd", "Tdv", "Tpt", "Ret"]
-    methods_num = [7]
-    dataset_num = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+def run_part(epsilon_list, sensitivity_s, sensitivity_p, c_init, window_size, windownum_warm, windownum_updateE, round_):
+    methods_list = ['spas', 'sample', 'uniform', 'dsat', 'fast', 'bd', 'adapub', 'pegasus']
+    datasets_list = ["Fmd", "Tdv", "Tpt", "Ret"]
+    methods_num = [0, 1, 2, 3, 4, 5, 6, 7]
+    dataset_num = [5, 6, 7, 8]
     
 
-    with open("./output/error4.pickle", "rb") as f:
+    with open("./output/error_eps.pickle", "rb") as f:
         err_all = pickle.load(f)
     
 
@@ -95,12 +95,12 @@ def run_part(epsilon_list, sensitivity_s, sensitivity_p, c_init, window_size, wi
                     err_all[dataset_num[i]][qq].append(0)
 
         for j, method_name in enumerate(methods_list):
-            err_tmp = run_def.run_method(method_name, epsilon_list, sensitivity_s, sensitivity_p, raw_stream, c_init, window_size, windownum_warm, windownum_updateE, dim, round_)
+            err_tmp = run_def.run_method(method_name, epsilon_list, sensitivity_s, sensitivity_p, raw_stream, c_init, window_size, windownum_warm, windownum_updateE, round_)
             for k in range(len(epsilon_list)):
                 err_all[dataset_num[i]][k][methods_num[j]] = err_tmp[k]
         print('********dataset', datasets_list[i], 'Done!********')
     
-    with open("./output/" + "error6.pickle", "wb") as f:
+    with open("./output/" + "error1.pickle", "wb") as f:
         pickle.dump(err_all, f)
 
     print(err_all)
@@ -108,7 +108,7 @@ def run_part(epsilon_list, sensitivity_s, sensitivity_p, c_init, window_size, wi
 
 # run all methods with varying window size
     
-def runw_allfix(epsilon, sensitivity_s, sensitivity_p, c_init, window_size_list, windownum_warm, windownum_updateE, dim, round_):
+def runw_allfix(epsilon, sensitivity_s, sensitivity_p, c_init, window_size_list, windownum_warm, windownum_updateE, round_):
     methods_list = ['spas', 'sample', 'uniform', 'dsat', 'fast', 'bd', 'adapub', 'pegasus']
     datasets_list = ["F1d", "Dth", "Uem", "syn_uniform", "syn_mix", "Fmd", "Tdv", "Tpt", "Ret"]
 
@@ -122,7 +122,7 @@ def runw_allfix(epsilon, sensitivity_s, sensitivity_p, c_init, window_size_list,
         raw_stream = run_def.run_dataset(dataset_name)
         for j, method_name in enumerate(methods_list):
             # set Flag_ = 1 means varying window size, the default is 0
-            err_tmp = run_def.run_method(method_name, epsilon, sensitivity_s, sensitivity_p, raw_stream, c_init, window_size_list, windownum_warm, windownum_updateE, dim, round_, 1)
+            err_tmp = run_def.run_method(method_name, epsilon, sensitivity_s, sensitivity_p, raw_stream, c_init, window_size_list, windownum_warm, windownum_updateE, round_, 1)
             for k in range(len(window_size_list)):
                 err_all[i][k].append(err_tmp[k])
         print('********dataset', datasets_list[i], 'Done!********')
@@ -135,7 +135,7 @@ def runw_allfix(epsilon, sensitivity_s, sensitivity_p, c_init, window_size_list,
 
 # Only update part of results recorded in error.pickle
     
-def runw_part(epsilon, sensitivity_s, sensitivity_p, c_init, window_size_list, windownum_warm, windownum_updateE, dim, round_):
+def runw_part(epsilon, sensitivity_s, sensitivity_p, c_init, window_size_list, windownum_warm, windownum_updateE, round_):
     methods_list = ['pegasus']
     datasets_list = ["F1d", "Dth", "Uem", "syn_uniform", "syn_mix", "Fmd", "Tdv", "Tpt", "Ret"]
     methods_num = [7]
@@ -155,7 +155,7 @@ def runw_part(epsilon, sensitivity_s, sensitivity_p, c_init, window_size_list, w
                     err_all[dataset_num[i]][qq].append(0)
 
         for j, method_name in enumerate(methods_list):
-            err_tmp = run_def.run_method(method_name, epsilon, sensitivity_s, sensitivity_p, raw_stream, c_init, window_size_list, windownum_warm, windownum_updateE, dim, round_, 1)
+            err_tmp = run_def.run_method(method_name, epsilon, sensitivity_s, sensitivity_p, raw_stream, c_init, window_size_list, windownum_warm, windownum_updateE, round_, 1)
             for k in range(len(window_size_list)):
                 err_all[dataset_num[i]][k][methods_num[j]] = err_tmp[k]
         print('********dataset', datasets_list[i], 'Done!********')
@@ -167,19 +167,23 @@ def runw_part(epsilon, sensitivity_s, sensitivity_p, c_init, window_size_list, w
 
 if __name__ == "__main__":
     
-    #epsilon_list = [0.1, 0.3, 0.5, 0.7, 0.9]
-    epsilon = 0.1
-    window_size_list = [40, 80, 120, 160, 200]
+    epsilon_list = [0.1, 0.3, 0.5, 0.7, 0.9]
     sensitivity_s = 1
     sensitivity_p = 1
-    #window_size = 120
-    #c_init = window_size / 20
-    c_init = 20
+    #### For varying epsilon #####
+    window_size = 120
+    c_init = window_size / 20
+    ##############
+    
+    #### For varying window size ####
+    # epsilon = 0.1
+    # window_size_list = [40, 80, 120, 160, 200]
+    # c_init = 20
+    ##############
     windownum_warm = 1
     windownum_updateE = 2
-    dim = 1
     round_ = 5
 
     #run_all(epsilon_list, sensitivity_s, sensitivity_p, raw_stream, c_init, window_size, windownum_warm, windownum_updateE, dim, round_)
-    #run_part(epsilon_list, sensitivity_s, sensitivity_p, c_init, window_size, windownum_warm, windownum_updateE, dim, round_)
-    runw_part(epsilon, sensitivity_s, sensitivity_p, c_init, window_size_list, windownum_warm, windownum_updateE, dim, round_)
+    run_part(epsilon_list, sensitivity_s, sensitivity_p, c_init, window_size, windownum_warm, windownum_updateE, round_)
+    #runw_part(epsilon, sensitivity_s, sensitivity_p, c_init, window_size_list, windownum_warm, windownum_updateE, dim, round_)

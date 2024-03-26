@@ -87,7 +87,7 @@ def update_optimalc(epsilon_p, sensitivity_p, compute_num, window_size, publishe
 # Publish the data in the first window or first several windows
 
 def warm_up_stage(epsilon, sensitivity_p, raw_stream, c_init, window_size, window_num, dim):
-    c_init = window_size / 20
+    #c_init = window_size / 20
     sample_interval = int(window_size / c_init)
     total_for_warmup = window_size * window_num
     published_stream = []
@@ -187,7 +187,8 @@ def SPAS_workflow(epsilon, sensitivity_s, sensitivity_p, raw_stream, c_init, win
 # Flag == 0, varying epsilon
 # Flag ==1, varying window size
 
-def run_SPAS(epsilon, sensitivity_s, sensitivity_p, raw_stream, c_init, window_size, windownum_warm, windownum_updateE, dim, round_, Flag_ = 0):
+def run_SPAS(epsilon, sensitivity_s, sensitivity_p, raw_stream, c_init, window_size, windownum_warm, windownum_updateE, round_, Flag_ = 0):
+    dim = len(raw_stream[0])
     MAE_list = []
     
     if Flag_ == 0:
