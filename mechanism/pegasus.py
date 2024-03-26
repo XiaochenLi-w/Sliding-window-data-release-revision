@@ -1,7 +1,7 @@
 import numpy as np
 import math
 
-from mechanism.common_metrics import count_mae
+from mechanism.common_metrics import count_mre
 from mechanism.data_process import data_reader
 
 class Pegasus:
@@ -218,7 +218,7 @@ def run_pegasus(epsilon, sensitivity, raw_stream, window_size, dim, round_, Flag
             for r in range(round_):
                 mech = Pegasus(eps, window_size, dim, sensitivity)
                 published_result = mech.run(raw_stream)
-                MAE_ += count_mae(raw_stream, published_result)
+                MAE_ += count_mre(raw_stream, published_result)
             
             MAE_ = MAE_ / round_
             print("epsilon:", eps, "Done!")
@@ -233,7 +233,7 @@ def run_pegasus(epsilon, sensitivity, raw_stream, window_size, dim, round_, Flag
             for r in range(round_):
                 mech = Pegasus(epsilon, w, dim, sensitivity)
                 published_result = mech.run(raw_stream)
-                MAE_ += count_mae(raw_stream, published_result)
+                MAE_ += count_mre(raw_stream, published_result)
             
             MAE_ = MAE_ / round_
             print("window size:", w, "Done!")

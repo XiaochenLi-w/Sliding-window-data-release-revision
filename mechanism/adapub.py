@@ -7,7 +7,7 @@ DEBUG = False
 # para_w = 100
 # para_eps = 0.5
 
-from mechanism.common_metrics import count_mae
+from mechanism.common_metrics import count_mre
 from mechanism.data_process import data_reader
 
 
@@ -327,7 +327,7 @@ def run_adapub(epsilon, sensitivity, raw_stream, window_size, dim, round_, Flag_
             for r in range(round_):
                 mech = Adapub(eps, window_size, dim, sensitivity)
                 published_result = mech.run(raw_stream)
-                MAE_ += count_mae(raw_stream, published_result)
+                MAE_ += count_mre(raw_stream, published_result)
             
             MAE_ = MAE_ / round_
             print("epsilon:", eps, "Done!")
@@ -342,7 +342,7 @@ def run_adapub(epsilon, sensitivity, raw_stream, window_size, dim, round_, Flag_
             for r in range(round_):
                 mech = Adapub(epsilon, w, dim, sensitivity)
                 published_result = mech.run(raw_stream)
-                MAE_ += count_mae(raw_stream, published_result)
+                MAE_ += count_mre(raw_stream, published_result)
             
             MAE_ = MAE_ / round_
             print("window size:", w, "Done!")

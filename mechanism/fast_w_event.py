@@ -1,7 +1,7 @@
 import numpy as np
 import math
 
-from mechanism.common_metrics import count_mae
+from mechanism.common_metrics import count_mre
 from mechanism.data_process import data_reader
 
 para_ratio = 0.075
@@ -163,7 +163,7 @@ def run_fast(epsilon, sensitivity, raw_stream, window_size, dim, round_, Flag_ =
 
                         for i in range(len(published)):
                             res[t + i][d] = published[i]
-                MAE_ += count_mae(raw_stream, res)
+                MAE_ += count_mre(raw_stream, res)
 
             MAE_ = MAE_ / round_
             print("epsilon:", eps, "Done!")
@@ -187,7 +187,7 @@ def run_fast(epsilon, sensitivity, raw_stream, window_size, dim, round_, Flag_ =
 
                         for i in range(len(published)):
                             res[t + i][d] = published[i]
-                MAE_ += count_mae(raw_stream, res)
+                MAE_ += count_mre(raw_stream, res)
 
             MAE_ = MAE_ / round_
             print("window size:", w, "Done!")

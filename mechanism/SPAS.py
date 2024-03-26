@@ -1,5 +1,5 @@
 import numpy as np
-from mechanism.common_metrics import count_mae
+from mechanism.common_metrics import count_mre
 from mechanism.data_process import data_reader
 
 # Add Laplace noise
@@ -195,7 +195,7 @@ def run_SPAS(epsilon, sensitivity_s, sensitivity_p, raw_stream, c_init, window_s
             MAE_ = 0
             for i in range(round_):
                 published_result = SPAS_workflow(eps, sensitivity_s, sensitivity_p, raw_stream, c_init, window_size, windownum_warm, windownum_updateE, dim)
-                MAE_ += count_mae(raw_stream, published_result)
+                MAE_ += count_mre(raw_stream, published_result)
 
             MAE_ = MAE_ / round_
             print("epsilon:", eps, "Done!")
@@ -209,7 +209,7 @@ def run_SPAS(epsilon, sensitivity_s, sensitivity_p, raw_stream, c_init, window_s
             MAE_ = 0
             for i in range(round_):
                 published_result = SPAS_workflow(epsilon, sensitivity_s, sensitivity_p, raw_stream, c_init, w, windownum_warm, windownum_updateE, dim)
-                MAE_ += count_mae(raw_stream, published_result)
+                MAE_ += count_mre(raw_stream, published_result)
 
             MAE_ = MAE_ / round_
             print("window size:", w, "Done!")

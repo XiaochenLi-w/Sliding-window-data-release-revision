@@ -1,7 +1,7 @@
 import math
 import numpy as np
 
-from mechanism.common_metrics import count_mae
+from mechanism.common_metrics import count_mre
 from mechanism.data_process import data_reader
 
 def lap(v, epsilon, sensitivity):
@@ -87,7 +87,7 @@ def run_bd(epsilon, sensitivity, raw_stream, window_size, dim, round_, Flag_ = 0
             MAE_ = 0
             for r in range(round_):
                 published_result = bd_workflow(eps, sensitivity, raw_stream, window_size, dim)
-                MAE_ += count_mae(raw_stream, published_result)
+                MAE_ += count_mre(raw_stream, published_result)
             
             MAE_ = MAE_ / round_
             print("epsilon:", eps, "Done!")
@@ -101,7 +101,7 @@ def run_bd(epsilon, sensitivity, raw_stream, window_size, dim, round_, Flag_ = 0
             MAE_ = 0
             for r in range(round_):
                 published_result = bd_workflow(epsilon, sensitivity, raw_stream, w, dim)
-                MAE_ += count_mae(raw_stream, published_result)
+                MAE_ += count_mre(raw_stream, published_result)
             
             MAE_ = MAE_ / round_
             print("window size:", w, "Done!")

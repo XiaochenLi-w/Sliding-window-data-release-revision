@@ -1,5 +1,5 @@
 import numpy as np
-from mechanism.common_metrics import count_mae
+from mechanism.common_metrics import count_mre
 from mechanism.data_process import data_reader
 
 # Add Laplace noise
@@ -34,7 +34,7 @@ def run_sample(epsilon, sensitivity, raw_stream, window_size, dim, round_, Flag_
             MAE_ = 0
             for i in range(round_):
                 published_result = sample_workload(eps, sensitivity, raw_stream, window_size, dim)
-                MAE_ += count_mae(raw_stream, published_result)
+                MAE_ += count_mre(raw_stream, published_result)
 
             MAE_ = MAE_ / round_
             print("epsilon:", eps, "Done!")
@@ -48,7 +48,7 @@ def run_sample(epsilon, sensitivity, raw_stream, window_size, dim, round_, Flag_
             MAE_ = 0
             for i in range(round_):
                 published_result = sample_workload(epsilon, sensitivity, raw_stream, w, dim)
-                MAE_ += count_mae(raw_stream, published_result)
+                MAE_ += count_mre(raw_stream, published_result)
 
             MAE_ = MAE_ / round_
             print("window size:", w, "Done!")
