@@ -15,7 +15,7 @@ def count_mre(raw_result, published_result):
     for i in range(published_time):
         for j in range(dim):
             if raw_result[i][j] == 0:
-                error_sum += 1
+                error_sum += published_result[i][j]
             else:
                 error_sum += abs(raw_result[i][j] - published_result[i][j]) / raw_result[i][j]
     
@@ -112,5 +112,5 @@ def range_query_count(raw_result, published_result, query_num):
 if __name__ == "__main__":
     a = [[1] for i in range(30)]+[[0.5] for i in range(70)]
     b = [[0.5] for i in range(100)]
-    print(range_query_sum(a, b, 10))
-    print(range_query_count(a, b, 10))
+    print(range_query_sum(a, b, 100))
+    print(range_query_count(a, b, 100))
