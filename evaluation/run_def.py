@@ -9,9 +9,9 @@ import mechanism.pegasus
 import mechanism.common_metrics
 import mechanism.data_process
 
-def run_method(method_name, epsilon_list, sensitivity_s, sensitivity_p, raw_stream, c_init, window_size, windownum_warm, windownum_updateE, round_, Flag_ = 0):
+def run_method(method_name, epsilon_list, sensitivity_s, sensitivity_p, raw_stream, window_size, windownum_warm, windownum_updateE, round_, Flag_ = 0):
     if method_name == "spas":
-        error_ = mechanism.SPAS.run_SPAS(epsilon_list, sensitivity_s, sensitivity_p, raw_stream, c_init, window_size, windownum_warm, windownum_updateE, round_, Flag_)
+        error_ = mechanism.SPAS.run_SPAS(epsilon_list, sensitivity_s, sensitivity_p, raw_stream, window_size, windownum_warm, windownum_updateE, round_, Flag_)
         
     elif method_name == "sample":
 

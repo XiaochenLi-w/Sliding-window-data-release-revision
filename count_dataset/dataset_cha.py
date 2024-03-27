@@ -68,7 +68,7 @@ def count_varcharac():
 
 
 def count_eachwindoweps():
-    datasets_list = ["F1d", "Dth", "Uem",  "syn_uniform", "syn_mix", "Fmd", "Tdv", "Tpt", "Ret"]
+    datasets_list = ["F1d", "Dth", "Uem",  "syn_uniform", "syn_mix", "Fmd", "Tdv", "syn_multi", "Ret"]
     window_size = 120
     epsilon = [0.1, 0.3, 0.5, 0.7, 0.9]
     
@@ -105,7 +105,7 @@ def count_eachwindoweps():
 
 
 def count_eachwindoww():
-    datasets_list = ["F1d", "Dth", "Uem", "syn_uniform", "syn_mix", "Fmd", "Tdv", "Tpt", "Ret"]
+    datasets_list = ["F1d", "Dth", "Uem", "syn_uniform", "syn_mix", "Fmd", "Tdv", "syn_multi", "Ret"]
     epsilon = 0.1
     window_size = [40, 80, 120, 160, 200]
     
@@ -149,5 +149,5 @@ if __name__ == "__main__":
 
     #print(count_charac())
     #print(count_varcharac())
-    count_eachwindoweps()
+    count_eachwindoww()
 

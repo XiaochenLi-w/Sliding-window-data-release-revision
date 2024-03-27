@@ -43,7 +43,7 @@ def draw_heat_eps(error, datasetlist, epsilon_list):
             if j == 0:
                 ax.set_ylabel('Datasets', fontsize =15, fontdict=font)
                 
-                datalist_shortname = ["Otp", "Dth", "Uem", "syn1", "syn2", "Flu", "Tdv", "Tpt", "Ret"]
+                datalist_shortname = ["Otp", "Dth", "Uem", "Syn1", "Syn2", "Flu", "Tdv", "Syn3", "Ret"]
                 ax.set_yticks([i for i in range(len(datasetlist))])
                 ax.tick_params(left=True, right=False)
                 ax.set_yticklabels(datalist_shortname, fontsize = 10, fontdict=font)
@@ -95,7 +95,7 @@ def draw_heat_eps(error, datasetlist, epsilon_list):
     fig.subplots_adjust(left=0.076, bottom=0.258, right=0.813, top=0.775, wspace=0, hspace=0.379)
 
     plt.show()
-    #fig.savefig("./fig/varying_eps.pdf")
+    fig.savefig("./fig/varying_eps.pdf")
     
     #fig.savefig("./new_fig/heat_" + d + "_" + eval + ".pdf")
     
@@ -140,7 +140,7 @@ def draw_heat_w(error, datasetlist, window_size_list):
             if j == 0:
                 ax.set_ylabel('Datasets', fontsize =15, fontdict=font)
                 
-                datalist_shortname = ["Otp", "Dth", "Uem", "syn1", "syn2", "Flu", "Tdv", "Tpt", "Ret"]
+                datalist_shortname = ["Otp", "Dth", "Uem", "Syn1", "Syn2", "Flu", "Tdv", "Syn3", "Ret"]
                 ax.set_yticks([i for i in range(len(datasetlist))])
                 ax.tick_params(left=True, right=False)
                 ax.set_yticklabels(datalist_shortname, fontsize = 10, fontdict=font)
@@ -192,7 +192,7 @@ def draw_heat_w(error, datasetlist, window_size_list):
     fig.subplots_adjust(left=0.076, bottom=0.258, right=0.813, top=0.775, wspace=0, hspace=0.379)
 
     plt.show()
-    #fig.savefig("./fig/varying_w.pdf")
+    fig.savefig("./fig/varying_w.pdf")
 
 
 if __name__ == "__main__":
@@ -216,7 +216,7 @@ if __name__ == "__main__":
     
 
     # draw eps
-    with open("./output/error1.pickle", "rb") as f:
+    with open("./output/error2.pickle", "rb") as f:
         error = pickle.load(f)
-    draw_heat_eps(error, datasets_list, epsilon_list)
-    #draw_heat_w(error, datasets_list, window_size_list)
+    #draw_heat_eps(error, datasets_list, epsilon_list)
+    draw_heat_w(error, datasets_list, window_size_list)

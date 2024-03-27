@@ -86,8 +86,8 @@ def update_optimalc(epsilon_p, sensitivity_p, compute_num, window_size, publishe
 
 # Publish the data in the first window or first several windows
 
-def warm_up_stage(epsilon, sensitivity_p, raw_stream, c_init, window_size, window_num, dim):
-    #c_init = window_size / 20
+def warm_up_stage(epsilon, sensitivity_p, raw_stream, window_size, window_num, dim):
+    c_init = window_size / 20
     sample_interval = int(window_size / c_init)
     total_for_warmup = window_size * window_num
     published_stream = []
@@ -131,14 +131,14 @@ def find_firstsample(eps_con, window_size):
 
 # The whole workflow of SPAS
 
-def SPAS_workflow(epsilon, sensitivity_s, sensitivity_p, raw_stream, c_init, window_size, windownum_warm, windownum_updateE, dim):
+def SPAS_workflow(epsilon, sensitivity_s, sensitivity_p, raw_stream, window_size, windownum_warm, windownum_updateE, dim):
     epsilon_s = epsilon / 4
     epsilon_p = epsilon - epsilon_s
     eps_1 = epsilon_s / 2
     eps_2 = epsilon_s - eps_1
 
     # warm_up stage
-    published_stream, eps_consumed, svt_consumed = warm_up_stage(epsilon, sensitivity_p, raw_stream, c_init, window_size, windownum_warm, dim)
+    published_stream, eps_consumed, svt_consumed = warm_up_stage(epsilon, sensitivity_p, raw_stream, window_size, windownum_warm, dim)
 
     optimal_c = update_optimalc(epsilon_p, sensitivity_p, windownum_updateE, window_size, published_stream, dim)
 
@@ -187,7 +187,7 @@ def SPAS_workflow(epsilon, sensitivity_s, sensitivity_p, raw_stream, c_init, win
 # Flag == 0, varying epsilon
 # Flag ==1, varying window size
 
-def run_SPAS(epsilon, sensitivity_s, sensitivity_p, raw_stream, c_init, window_size, windownum_warm, windownum_updateE, round_, Flag_ = 0):
+def run_SPAS(epsilon, sensitivity_s, sensitivity_p, raw_stream, window_size, windownum_warm, windownum_updateE, round_, Flag_ = 0):
     dim = len(raw_stream[0])
     MAE_list = []
     
@@ -195,7 +195,7 @@ def run_SPAS(epsilon, sensitivity_s, sensitivity_p, raw_stream, c_init, window_s
         for eps in epsilon:
             MAE_ = 0
             for i in range(round_):
-                published_result = SPAS_workflow(eps, sensitivity_s, sensitivity_p, raw_stream, c_init, window_size, windownum_warm, windownum_updateE, dim)
+                published_result = SPAS_workflow(eps, sensitivity_s, sensitivity_p, raw_stream, window_size, windownum_warm, windownum_updateE, dim)
                 MAE_ += count_mre(raw_stream, published_result)
 
             MAE_ = MAE_ / round_
@@ -209,7 +209,7 @@ def run_SPAS(epsilon, sensitivity_s, sensitivity_p, raw_stream, c_init, window_s
         for w in window_size:
             MAE_ = 0
             for i in range(round_):
-                published_result = SPAS_workflow(epsilon, sensitivity_s, sensitivity_p, raw_stream, c_init, w, windownum_warm, windownum_updateE, dim)
+                published_result = SPAS_workflow(epsilon, sensitivity_s, sensitivity_p, raw_stream, w, windownum_warm, windownum_updateE, dim)
                 MAE_ += count_mre(raw_stream, published_result)
 
             MAE_ = MAE_ / round_
@@ -229,12 +229,12 @@ if __name__ == "__main__":
     sensitivity_s = 1
     sensitivity_p = 1
     window_size = 100
-    c_init = window_size / 5
+    # c_init = window_size / 5
     windownum_warm = 1
     windownum_updateE = 4
     dim = 1
     round_ = 1
     
-    error_ = run_SPAS(epsilon, sensitivity_s, sensitivity_p, raw_stream, c_init, window_size, windownum_warm, windownum_updateE, dim, round_)
+    error_ = run_SPAS(epsilon, sensitivity_s, sensitivity_p, raw_stream, window_size, windownum_warm, windownum_updateE, dim, round_)
     print(error_)
     

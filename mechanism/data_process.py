@@ -157,8 +157,8 @@ def data_reader(name):
                 elif count>= 2:
                     data.append([int(i) for i in lines.split(',')])
     
-    elif name == "Wcp":
-        filename = "./dataset/old_data_ori/worldcup_output.csv"
+    elif name == "syn_multi":
+        filename = "./dataset/syn_dataset/syn_multi.csv"
         with open(filename, 'r', encoding='utf-8') as file_to_read:
             while True:
 
@@ -166,7 +166,7 @@ def data_reader(name):
                 count += 1
                 if not lines:
                     break
-                elif count>= 2:
+                elif count>= 1:
                     data.append([int(i) for i in lines.split(',')])
 
     return data
