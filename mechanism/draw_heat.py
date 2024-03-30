@@ -12,7 +12,7 @@ def draw_heat_eps(error, datasetlist, epsilon_list):
     font={'family':'Times New Roman', 'weight':'bold'}
     # 
     #matplotlib.rcParams.update({'font.size': 8})
-    fig, axes_l = plt.subplots(nrows=2, ncols=4, sharey="row", figsize=(16, 9))
+    fig, axes_l = plt.subplots(nrows=2, ncols=4, sharey="row", figsize=(14, 6))
     #plt.subplots_adjust(hspace=0.1, wspace=0.1)
     #fig.set_size_inches(16, 9)
     # plt.subplots_adjust(bottom=1)
@@ -97,7 +97,7 @@ def draw_heat_eps(error, datasetlist, epsilon_list):
 
     plt.show()
     # fig.savefig("./fig/varying_eps.pdf")
-    fig.savefig("./fig/count_query_eps_query_num_1000.pdf")
+    fig.savefig("./fig/heat_count_query_eps.pdf")
     
     #fig.savefig("./new_fig/heat_" + d + "_" + eval + ".pdf")
     
@@ -111,7 +111,7 @@ def draw_heat_w(error, datasetlist, window_size_list):
     font={'family':'Times New Roman', 'weight':'bold'}
     # 
     #matplotlib.rcParams.update({'font.size': 8})
-    fig, axes_l = plt.subplots(nrows=2, ncols=4, sharey="row", figsize=(16, 9))
+    fig, axes_l = plt.subplots(nrows=2, ncols=4, sharey="row", figsize=(14, 6))
     #plt.subplots_adjust(hspace=0.1, wspace=0.1)
     #fig.set_size_inches(16, 9)
     # plt.subplots_adjust(bottom=1)
@@ -196,7 +196,7 @@ def draw_heat_w(error, datasetlist, window_size_list):
     fig.subplots_adjust(left=0.076, bottom=0.2, right=0.813, top=0.77, wspace=0.15, hspace=0)
 
     plt.show()
-    fig.savefig("./fig/sum_query_w_query_num_1000.pdf")
+    fig.savefig("./fig/heat_count_query_w.pdf")
 
 
 if __name__ == "__main__":
@@ -221,7 +221,7 @@ if __name__ == "__main__":
     
 
     # draw eps
-    with open("./output/error_w_sum_query.pickle", "rb") as f:
+    with open("./output/error_w_count_query.pickle", "rb") as f:
         error = pickle.load(f)
-    # draw_heat_eps(error, datasets_list, epsilon_list)
+    draw_heat_eps(error, datasets_list, epsilon_list)
     draw_heat_w(error, datasets_list, window_size_list)
