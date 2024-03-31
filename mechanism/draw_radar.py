@@ -9,7 +9,7 @@ def draw_radar_eps(error, datasetlist, epsilon_list):
     
     plt.rc('font', **font)
     
-    fig, axes_list = plt.subplots(nrows=1, ncols=5, sharey="row", figsize=(18, 5), subplot_kw=dict(polar=True))
+    fig, axes_list = plt.subplots(nrows=1, ncols=2, sharey="row", figsize=(9, 5), subplot_kw=dict(polar=True))
     # fig = plt.figure(figsize=(12, 8))
     # gs = gridspec.GridSpec(2, 6)
     
@@ -36,7 +36,7 @@ def draw_radar_eps(error, datasetlist, epsilon_list):
         ax.set_ylim(10.5, 0.5)
         # ax.set_ylim(1, 100)
         
-        if i>=5:
+        if i>=2:
             break
         
         for method_index, method_name in enumerate(methods_name):
@@ -44,14 +44,18 @@ def draw_radar_eps(error, datasetlist, epsilon_list):
             # obtain and normalize data
             stats = []
             for j in range(len(datasetlist)):
-                stats.append(min(10, error[j][i][method_index] / error_min[j][i]))
+                stats.append(min(10, error[j][2*i+2][method_index] / error_min[j][2*i+2]))
             
             stats = np.concatenate((stats, [stats[0]]))
             
             angles = np.linspace(0, 2 * np.pi, len(datalist_shortname), endpoint=False).tolist()
             angles += angles[:1]
-        
-            ax.plot(angles, stats, colors[method_index], linewidth=0.5, marker = 'o', ms=1)
+
+            if method_index == 0:
+                ax.plot(angles, stats, colors[method_index], linewidth=1.5, marker = 'o', ms=2)
+            else:
+                ax.plot(angles, stats, colors[method_index], linewidth=0.5, marker = 'o', ms=1)
+                
             ax.fill(angles, stats, colors[method_index], alpha=0.05)
             
             desired_radii = [1, 3, 5, 7, 9]
@@ -61,19 +65,19 @@ def draw_radar_eps(error, datasetlist, epsilon_list):
         ax.set_yticklabels([])
         ax.set_xticks(angles[:-1])
         ax.set_xticklabels(datalist_shortname, size=10)
-        ax.set_title(r'$\epsilon$=' + str(epsilon_list[i]), fontsize=15, fontdict=font)
+        ax.set_title(r'$\epsilon$=' + str(epsilon_list[2*i+2]), fontsize=15, fontdict=font)
       
     plt.tight_layout()
     plt.subplots_adjust(top=0.85, left=0.03, right=0.97, wspace=0.29, hspace=0.15)
 
-    legend_ax = fig.add_axes([0.3, 0.8, 0.4, 0.1])
+    legend_ax = fig.add_axes([0.3, 0.9, 0.4, 0.1])
     # legend_ax = fig.add_axes([0.3, 0.45, 0.4, 0.1])
     legend_ax.axis('off')
 
     legend_handles = [plt.Line2D([0], [0], color=color, linewidth=1, linestyle='-') for color in colors]
     legend_ax.legend(legend_handles, methods_name, loc='center', ncol=len(methods_name)//2, fontsize=8)
 
-    fig.savefig("./fig/radar_count_query_eps_1.pdf")
+    fig.savefig("./fig/radar_count_query_eps.pdf")
     plt.show()
     
     
@@ -83,7 +87,7 @@ def draw_radar_w(error, datasetlist, window_size_list):
     
     plt.rc('font', **font)
     
-    fig, axes_list = plt.subplots(nrows=1, ncols=5, sharey="row", figsize=(18, 5), subplot_kw=dict(polar=True))
+    fig, axes_list = plt.subplots(nrows=1, ncols=2, sharey="row", figsize=(9, 5), subplot_kw=dict(polar=True))
     # fig = plt.figure(figsize=(12, 8))
     # gs = gridspec.GridSpec(2, 6)
     
@@ -110,7 +114,7 @@ def draw_radar_w(error, datasetlist, window_size_list):
         ax.set_ylim(10.5, 0.5)
         # ax.set_ylim(1, 100)
         
-        if i>=5:
+        if i>=2:
             break
         
         for method_index, method_name in enumerate(methods_name):
@@ -118,14 +122,18 @@ def draw_radar_w(error, datasetlist, window_size_list):
             # obtain and normalize data
             stats = []
             for j in range(len(datasetlist)):
-                stats.append(min(10, error[j][i][method_index] / error_min[j][i]))
+                stats.append(min(10, error[j][2*i+1][method_index] / error_min[j][2*i+1]))
             
             stats = np.concatenate((stats, [stats[0]]))
             
             angles = np.linspace(0, 2 * np.pi, len(datalist_shortname), endpoint=False).tolist()
             angles += angles[:1]
         
-            ax.plot(angles, stats, colors[method_index], linewidth=0.5, marker = 'o', ms=1)
+            if method_index == 0:
+                ax.plot(angles, stats, colors[method_index], linewidth=1.5, marker = 'o', ms=2)
+            else:
+                ax.plot(angles, stats, colors[method_index], linewidth=0.5, marker = 'o', ms=1)
+                
             ax.fill(angles, stats, colors[method_index], alpha=0.05)
             
             desired_radii = [1, 3, 5, 7, 9]
@@ -135,19 +143,19 @@ def draw_radar_w(error, datasetlist, window_size_list):
         ax.set_yticklabels([])
         ax.set_xticks(angles[:-1])
         ax.set_xticklabels(datalist_shortname, size=10)
-        ax.set_title('w=' + str(window_size_list[i]), fontsize=15, fontdict=font)
+        ax.set_title('w=' + str(window_size_list[2*i+1]), fontsize=15, fontdict=font)
       
     plt.tight_layout()
     plt.subplots_adjust(top=0.85, left=0.03, right=0.97, wspace=0.29, hspace=0.15)
     
-    legend_ax = fig.add_axes([0.3, 0.8, 0.4, 0.1])
+    legend_ax = fig.add_axes([0.3, 0.9, 0.4, 0.1])
     # legend_ax = fig.add_axes([0.3, 0.45, 0.4, 0.1])
     legend_ax.axis('off')
 
     legend_handles = [plt.Line2D([0], [0], color=color, linewidth=1, linestyle='-') for color in colors]
     legend_ax.legend(legend_handles, methods_name, loc='center', ncol=len(methods_name)//2, fontsize=8)
 
-    fig.savefig("./fig/radar_count_query_w_1.pdf")
+    fig.savefig("./fig/radar_count_query_w.pdf")
     plt.show()
             
             
