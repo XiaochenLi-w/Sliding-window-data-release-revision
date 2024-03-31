@@ -65,10 +65,14 @@ def draw_radar_eps(error, datasetlist, epsilon_list):
         ax.set_yticklabels([])
         ax.set_xticks(angles[:-1])
         ax.set_xticklabels(datalist_shortname, size=10)
-        ax.set_title(r'$\epsilon$=' + str(epsilon_list[2*i+2]), fontsize=15, fontdict=font)
+        
+        if i == 0:
+            ax.set_title('(a) ' + r'$\epsilon$=' + str(epsilon_list[2*i+2]), fontsize=15, fontdict=font)
+        else:
+            ax.set_title('(b) ' + r'$\epsilon$=' + str(epsilon_list[2*i+2]), fontsize=15, fontdict=font)
       
     plt.tight_layout()
-    plt.subplots_adjust(top=0.85, left=0.03, right=0.97, wspace=0.29, hspace=0.15)
+    plt.subplots_adjust(top=0.85, left=0.03, right=0.95, wspace=0.29, hspace=0.15)
 
     legend_ax = fig.add_axes([0.3, 0.9, 0.4, 0.1])
     # legend_ax = fig.add_axes([0.3, 0.45, 0.4, 0.1])
@@ -143,10 +147,13 @@ def draw_radar_w(error, datasetlist, window_size_list):
         ax.set_yticklabels([])
         ax.set_xticks(angles[:-1])
         ax.set_xticklabels(datalist_shortname, size=10)
-        ax.set_title('w=' + str(window_size_list[2*i+1]), fontsize=15, fontdict=font)
+        if i == 0:
+            ax.set_title('(a) w=' + str(window_size_list[2*i+1]), fontsize=15, fontdict=font)
+        else:
+            ax.set_title('(b) w=' + str(window_size_list[2*i+1]), fontsize=15, fontdict=font)
       
     plt.tight_layout()
-    plt.subplots_adjust(top=0.85, left=0.03, right=0.97, wspace=0.29, hspace=0.15)
+    plt.subplots_adjust(top=0.85, left=0.03, right=0.95, wspace=0.29, hspace=0.15)
     
     legend_ax = fig.add_axes([0.3, 0.9, 0.4, 0.1])
     # legend_ax = fig.add_axes([0.3, 0.45, 0.4, 0.1])
