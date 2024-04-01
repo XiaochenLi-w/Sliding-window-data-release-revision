@@ -1,7 +1,7 @@
 import numpy as np
 import math
 
-from mechanism.common_metrics import count_mre
+from mechanism.common_metrics import count_mre, sum_query, count_query
 from mechanism.data_process import data_reader
 
 para_ratio = 0.075
@@ -199,15 +199,135 @@ def run_fast(epsilon, sensitivity, raw_stream, window_size, round_, Flag_ = 0):
 
     return MAE_list
 
+def run_fast_sum_query(epsilon, sensitivity, raw_stream, window_size, round_, query_num,Flag_ = 0):
+    dim = len(raw_stream[0])
+
+    publish_num = 0
+    res = [[0 for j in range(dim)] for i in range(len(raw_stream))]
+    query_MRE_list = []
+    
+    if Flag_ == 0:
+        for eps in epsilon:
+            query_MRE = 0
+            for r in range(round_):
+                for t in range(0, len(raw_stream), window_size + 1):
+
+                    end_index = min(t + window_size, len(raw_stream) - 1) + 1
+                    for d in range(dim):  
+                        substream_of_dimension = []
+                        for i in range(t, end_index - 1):
+                            substream_of_dimension.append(raw_stream[i][d])
+                        fast = substream_of_dimension
+                        published, tmp_publish_num = publish(eps, sensitivity, fast)
+                        publish_num += tmp_publish_num / dim
+
+                        for i in range(len(published)):
+                            res[t + i][d] = published[i]
+                query_MRE += sum_query(raw_stream, res, query_num)
+
+            query_MRE = query_MRE / round_
+            print("epsilon:", eps, "Done!")
+
+            query_MRE_list.append(query_MRE)
+
+    else:
+        for w in window_size:
+            query_MRE = 0
+            for r in range(round_):
+                for t in range(0, len(raw_stream), w + 1):
+
+                    end_index = min(t + w, len(raw_stream) - 1) + 1
+                    for d in range(dim):  
+                        substream_of_dimension = []
+                        for i in range(t, end_index - 1):
+                            substream_of_dimension.append(raw_stream[i][d])
+                        fast = substream_of_dimension
+                        published, tmp_publish_num = publish(epsilon, sensitivity, fast)
+                        publish_num += tmp_publish_num / dim
+
+                        for i in range(len(published)):
+                            res[t + i][d] = published[i]
+                query_MRE += sum_query(raw_stream, res, query_num)
+
+            query_MRE = query_MRE / round_
+            print("window size:", w, "Done!")
+
+            query_MRE_list.append(query_MRE)
+
+    print('FAST sum query DONE!')
+
+    return query_MRE_list
+
+def run_fast_count_query(epsilon, sensitivity, raw_stream, window_size, round_, query_num,Flag_ = 0):
+    dim = len(raw_stream[0])
+
+    publish_num = 0
+    res = [[0 for j in range(dim)] for i in range(len(raw_stream))]
+    query_MRE_list = []
+    
+    if Flag_ == 0:
+        for eps in epsilon:
+            query_MRE = 0
+            for r in range(round_):
+                for t in range(0, len(raw_stream), window_size + 1):
+
+                    end_index = min(t + window_size, len(raw_stream) - 1) + 1
+                    for d in range(dim):  
+                        substream_of_dimension = []
+                        for i in range(t, end_index - 1):
+                            substream_of_dimension.append(raw_stream[i][d])
+                        fast = substream_of_dimension
+                        published, tmp_publish_num = publish(eps, sensitivity, fast)
+                        publish_num += tmp_publish_num / dim
+
+                        for i in range(len(published)):
+                            res[t + i][d] = published[i]
+                query_MRE += count_query(raw_stream, res, query_num)
+
+            query_MRE = query_MRE / round_
+            print("epsilon:", eps, "Done!")
+
+            query_MRE_list.append(query_MRE)
+
+    else:
+        for w in window_size:
+            query_MRE = 0
+            for r in range(round_):
+                for t in range(0, len(raw_stream), w + 1):
+
+                    end_index = min(t + w, len(raw_stream) - 1) + 1
+                    for d in range(dim):  
+                        substream_of_dimension = []
+                        for i in range(t, end_index - 1):
+                            substream_of_dimension.append(raw_stream[i][d])
+                        fast = substream_of_dimension
+                        published, tmp_publish_num = publish(epsilon, sensitivity, fast)
+                        publish_num += tmp_publish_num / dim
+
+                        for i in range(len(published)):
+                            res[t + i][d] = published[i]
+                query_MRE += count_query(raw_stream, res, query_num)
+
+            query_MRE = query_MRE / round_
+            print("window size:", w, "Done!")
+
+            query_MRE_list.append(query_MRE)
+
+    print('FAST count query DONE!')
+
+    return query_MRE_list
+
 if __name__ == "__main__":
-    dataset_name = ["unemployment"]
-    raw_stream = data_reader(dataset_name[0])
-    epsilon = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
+
+    raw_stream = data_reader('Uem')
+    epsilon = [0.1, 0.3, 0.5, 0.7, 0.9]
     sensitivity_s = 1
     sensitivity_p = 1
     window_size = 100
     dim = 1
     round_ = 1
     
-    error_ = run_fast(epsilon, sensitivity_p, raw_stream, window_size, dim, round_)
-    print(error_)
+    # error_ = run_fast(epsilon, sensitivity_p, raw_stream, window_size, dim, round_)
+    # print(error_)
+    fast_query_err = run_fast_sum_query(epsilon, sensitivity_p, raw_stream, window_size, round_, 1000)
+    print(fast_query_err)

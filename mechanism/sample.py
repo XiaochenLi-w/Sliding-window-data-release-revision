@@ -1,5 +1,5 @@
 import numpy as np
-from mechanism.common_metrics import count_mre
+from mechanism.common_metrics import count_mre, sum_query, count_query
 from mechanism.data_process import data_reader
 
 # Add Laplace noise
@@ -60,16 +60,86 @@ def run_sample(epsilon, sensitivity, raw_stream, window_size, round_, Flag_ = 0)
 
     return MAE_list
 
+def run_sample_sum_query(epsilon, sensitivity, raw_stream, window_size, round_, query_num, Flag_ = 0):
+    dim = len(raw_stream[0])
+    query_MRE_list = []
+    
+    if Flag_ == 0:
+        for eps in epsilon:
+            query_MRE = 0
+            for i in range(round_):
+                published_result = sample_workload(eps, sensitivity, raw_stream, window_size, dim)
+                query_MRE += sum_query(raw_stream, published_result,query_num)
+
+            query_MRE = query_MRE / round_
+            print("epsilon:", eps, "Done!")
+        
+            query_MRE_list.append(query_MRE)
+
+        print('Sample sum query DONE!')
+
+    else:
+        for w in window_size:
+            query_MRE = 0
+            for i in range(round_):
+                published_result = sample_workload(epsilon, sensitivity, raw_stream, w, dim)
+                query_MRE += sum_query(raw_stream, published_result, query_num)
+
+            query_MRE = query_MRE / round_
+            print("window size:", w, "Done!")
+        
+            query_MRE_list.append(query_MRE)
+
+        print('Sample sum query DONE!')
+
+    return query_MRE_list
+
+def run_sample_count_query(epsilon, sensitivity, raw_stream, window_size, round_, query_num, Flag_ = 0):
+    dim = len(raw_stream[0])
+    query_MRE_list = []
+    
+    if Flag_ == 0:
+        for eps in epsilon:
+            query_MRE = 0
+            for i in range(round_):
+                published_result = sample_workload(eps, sensitivity, raw_stream, window_size, dim)
+                query_MRE += count_query(raw_stream, published_result,query_num)
+
+            query_MRE = query_MRE / round_
+            print("epsilon:", eps, "Done!")
+        
+            query_MRE_list.append(query_MRE)
+
+        print('Sample count query DONE!')
+
+    else:
+        for w in window_size:
+            query_MRE = 0
+            for i in range(round_):
+                published_result = sample_workload(epsilon, sensitivity, raw_stream, w, dim)
+                query_MRE += count_query(raw_stream, published_result, query_num)
+
+            query_MRE = query_MRE / round_
+            print("window size:", w, "Done!")
+        
+            query_MRE_list.append(query_MRE)
+
+        print('Sample count query DONE!')
+
+    return query_MRE_list
+
 if __name__ == "__main__":
     
-    dataset_name = ["unemployment"]
+    dataset_name = ["Uem"]
     raw_stream = data_reader(dataset_name[0])
-    epsilon = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
+    epsilon = [0.1, 0.3, 0.5, 0.7, 0.9]
     sensitivity = 1
     window_size = 100
     dim = 1
     round_ = 1
     
-    error_ = run_sample(epsilon, sensitivity, raw_stream, window_size, dim, round_)
-    print(error_)
+    # error_ = run_sample(epsilon, sensitivity, raw_stream, window_size, dim, round_)
+    # print(error_)
+    sample_query_err = run_sample_sum_query(epsilon, sensitivity, raw_stream, window_size, round_, 100)
+    print(sample_query_err)
     

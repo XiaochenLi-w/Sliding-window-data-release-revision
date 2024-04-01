@@ -21,7 +21,7 @@ def count_mre(raw_result, published_result):
     
     return error_sum / (published_time * dim)
 
-def range_query_sum(raw_result, published_result, query_num):
+def sum_query(raw_result, published_result, query_num):
     total_time = len(raw_result)
     published_time = len(published_result)
     dim = len(raw_result[0])
@@ -43,7 +43,7 @@ def range_query_sum(raw_result, published_result, query_num):
             query_list.append((a, b))
         else:
             query_list.append((b, a))
-    print('random sum query generated, query_num:', len(query_list))
+    # print('random sum query generated, query_num:', len(query_list))
     
     for query in query_list:
         raw_sum = [0 for i in range(dim)]
@@ -63,7 +63,7 @@ def range_query_sum(raw_result, published_result, query_num):
         
     return count_mre(raw_query_result, published_query_result)
 
-def range_query_count(raw_result, published_result, query_num):
+def count_query(raw_result, published_result, query_num):
     total_time = len(raw_result)
     published_time = len(published_result)
     dim = len(raw_result[0])
@@ -90,7 +90,7 @@ def range_query_count(raw_result, published_result, query_num):
                 query_list.append((a, b))
             else:
                 query_list.append((b, a))
-        print('random count query for dim', dim_num, 'generated, query_num:', len(query_list))
+        # print('random count query for dim', dim_num, 'generated, query_num:', len(query_list))
         
         for query_index in range(len(query_list)):
             raw_count = 0
@@ -112,5 +112,5 @@ def range_query_count(raw_result, published_result, query_num):
 if __name__ == "__main__":
     a = [[1] for i in range(30)]+[[0.5] for i in range(70)]
     b = [[0.5] for i in range(100)]
-    print(range_query_sum(a, b, 100))
-    print(range_query_count(a, b, 100))
+    print(sum_query(a, b, 100))
+    print(count_query(a, b, 100))

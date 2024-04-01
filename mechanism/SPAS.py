@@ -1,5 +1,5 @@
 import numpy as np
-from mechanism.common_metrics import count_mre
+from mechanism.common_metrics import count_mre, sum_query, count_query
 from mechanism.data_process import data_reader
 
 # Add Laplace noise
@@ -221,20 +221,88 @@ def run_SPAS(epsilon, sensitivity_s, sensitivity_p, raw_stream, window_size, win
 
     return MAE_list
 
+def run_SPAS_sum_query(epsilon, sensitivity_s, sensitivity_p, raw_stream, window_size, windownum_warm, windownum_updateE, round_, query_num, Flag_ = 0):
+    dim = len(raw_stream[0])
+    query_MRE_list = []
+    
+    if Flag_ == 0:
+        for eps in epsilon:
+            query_MRE = 0
+            for i in range(round_):
+                published_result = SPAS_workflow(eps, sensitivity_s, sensitivity_p, raw_stream, window_size, windownum_warm, windownum_updateE, dim)
+                query_MRE += sum_query(raw_stream, published_result, query_num)
+
+            query_MRE = query_MRE / round_
+            print("epsilon:", eps, "Done!")
+        
+            query_MRE_list.append(query_MRE)
+
+        print('SPAS sum query DONE!')
+
+    else:
+        for w in window_size:
+            query_MRE = 0
+            for i in range(round_):
+                published_result = SPAS_workflow(epsilon, sensitivity_s, sensitivity_p, raw_stream, w, windownum_warm, windownum_updateE, dim)
+                query_MRE += sum_query(raw_stream, published_result, query_num)
+
+            query_MRE = query_MRE / round_
+            print("window size:", w, "Done!")
+        
+            query_MRE_list.append(query_MRE)
+
+        print('SPAS sum query DONE!')
+
+    return query_MRE_list
+
+def run_SPAS_count_query(epsilon, sensitivity_s, sensitivity_p, raw_stream, window_size, windownum_warm, windownum_updateE, round_, query_num, Flag_ = 0):
+    dim = len(raw_stream[0])
+    query_MRE_list = []
+    
+    if Flag_ == 0:
+        for eps in epsilon:
+            query_MRE = 0
+            for i in range(round_):
+                published_result = SPAS_workflow(eps, sensitivity_s, sensitivity_p, raw_stream, window_size, windownum_warm, windownum_updateE, dim)
+                query_MRE += count_query(raw_stream, published_result, query_num)
+
+            query_MRE = query_MRE / round_
+            print("epsilon:", eps, "Done!")
+        
+            query_MRE_list.append(query_MRE)
+
+        print('SPAS count query DONE!')
+
+    else:
+        for w in window_size:
+            query_MRE = 0
+            for i in range(round_):
+                published_result = SPAS_workflow(epsilon, sensitivity_s, sensitivity_p, raw_stream, w, windownum_warm, windownum_updateE, dim)
+                query_MRE += count_query(raw_stream, published_result, query_num)
+
+            query_MRE = query_MRE / round_
+            print("window size:", w, "Done!")
+        
+            query_MRE_list.append(query_MRE)
+
+        print('SPAS count query DONE!')
+
+    return query_MRE_list
+
 if __name__ == "__main__":
     
-    dataset_name = ["unemployment"]
-    raw_stream = data_reader(dataset_name[0])
-    epsilon = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
+    raw_stream = data_reader('Uem')
+    epsilon = [0.1, 0.3, 0.5, 0.7, 0.9]
     sensitivity_s = 1
     sensitivity_p = 1
     window_size = 100
     # c_init = window_size / 5
     windownum_warm = 1
     windownum_updateE = 4
-    dim = 1
     round_ = 1
     
-    error_ = run_SPAS(epsilon, sensitivity_s, sensitivity_p, raw_stream, window_size, windownum_warm, windownum_updateE, dim, round_)
-    print(error_)
+    # error_ = run_SPAS(epsilon, sensitivity_s, sensitivity_p, raw_stream, window_size, windownum_warm, windownum_updateE, round_)
+    # print(error_)
+    sum_query_err = run_SPAS_sum_query(epsilon, sensitivity_s, sensitivity_p, raw_stream, window_size, windownum_warm, windownum_updateE, round_, 1000)
+    print(sum_query_err)
     

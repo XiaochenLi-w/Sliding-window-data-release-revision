@@ -7,7 +7,7 @@ DEBUG = False
 # para_w = 100
 # para_eps = 0.5
 
-from mechanism.common_metrics import count_mre
+from mechanism.common_metrics import count_mre, sum_query, count_query
 from mechanism.data_process import data_reader
 
 
@@ -353,6 +353,78 @@ def run_adapub(epsilon, sensitivity, raw_stream, window_size, round_, Flag_ = 0)
         print('Adapub DONE!')
 
     return MAE_list
+
+def run_adapub_sum_query(epsilon, sensitivity, raw_stream, window_size, round_, query_num, Flag_ = 0):
+    dim = len(raw_stream[0])
+    query_MRE_list = []
+    
+    if Flag_ == 0:
+        for eps in epsilon:
+            query_MRE = 0
+            for r in range(round_):
+                mech = Adapub(eps, window_size, dim, sensitivity)
+                published_result = mech.run(raw_stream)
+                query_MRE += sum_query(raw_stream, published_result, query_num)
+            
+            query_MRE = query_MRE / round_
+            print("epsilon:", eps, "Done!")
+        
+            query_MRE_list.append(query_MRE)
+
+        print('Adapub sum query DONE!')
+
+    else:
+        for w in window_size:
+            query_MRE = 0
+            for r in range(round_):
+                mech = Adapub(epsilon, w, dim, sensitivity)
+                published_result = mech.run(raw_stream)
+                query_MRE += sum_query(raw_stream, published_result, query_num)
+            
+            query_MRE = query_MRE / round_
+            print("window size:", w, "Done!")
+        
+            query_MRE_list.append(query_MRE)
+
+        print('Adapub sum query DONE!')
+
+    return query_MRE_list
+
+def run_adapub_count_query(epsilon, sensitivity, raw_stream, window_size, round_, query_num, Flag_ = 0):
+    dim = len(raw_stream[0])
+    query_MRE_list = []
+    
+    if Flag_ == 0:
+        for eps in epsilon:
+            query_MRE = 0
+            for r in range(round_):
+                mech = Adapub(eps, window_size, dim, sensitivity)
+                published_result = mech.run(raw_stream)
+                query_MRE += count_query(raw_stream, published_result, query_num)
+            
+            query_MRE = query_MRE / round_
+            print("epsilon:", eps, "Done!")
+        
+            query_MRE_list.append(query_MRE)
+
+        print('Adapub count query DONE!')
+
+    else:
+        for w in window_size:
+            query_MRE = 0
+            for r in range(round_):
+                mech = Adapub(epsilon, w, dim, sensitivity)
+                published_result = mech.run(raw_stream)
+                query_MRE += count_query(raw_stream, published_result, query_num)
+            
+            query_MRE = query_MRE / round_
+            print("window size:", w, "Done!")
+        
+            query_MRE_list.append(query_MRE)
+
+        print('Adapub count query DONE!')
+
+    return query_MRE_list
     
 
 # if __name__ == "__main__":
@@ -366,14 +438,16 @@ def run_adapub(epsilon, sensitivity, raw_stream, window_size, round_, Flag_ = 0)
 #     print(diff_MAE(ex, uni_op))
 
 if __name__ == "__main__":
-    dataset_name = ["unemployment"]
-    raw_stream = data_reader(dataset_name[0])
-    epsilon = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
+
+    raw_stream = data_reader('Uem')
+    epsilon = [0.1, 0.3, 0.5, 0.7, 0.9]
     sensitivity_s = 1
     sensitivity_p = 1
     window_size = 100
     dim = 1
     round_ = 1
     
-    error_ = run_adapub(epsilon, sensitivity_p, raw_stream, window_size, dim, round_)
-    print(error_)
+    # error_ = run_adapub(epsilon, sensitivity_p, raw_stream, window_size, dim, round_)
+    # print(error_)
+    sum_query_err = run_adapub_sum_query(epsilon, sensitivity_p, raw_stream, window_size, round_, 1000)
+    print(sum_query_err)
