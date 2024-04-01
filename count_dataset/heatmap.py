@@ -95,7 +95,7 @@ def draw_heat_w():
     fig.subplots_adjust(left=0.076, bottom=0.258, right=0.813, top=0.775, wspace=0.1, hspace=0.1)
 
     plt.show()
-    fig.savefig("dataset_charac.pdf")
+    #fig.savefig("dataset_charac.pdf")
 
     # fig.savefig("D:/W-dp-Streaming-Data-Publish-main/new_fig/" + "heat_color_w" + "_" + eval + ".pdf",
     #             bbox_inches='tight')

@@ -12,7 +12,7 @@ def draw_heat_eps(error, datasetlist, epsilon_list):
     font={'family':'Times New Roman', 'weight':'bold'}
     # 
     #matplotlib.rcParams.update({'font.size': 8})
-    fig, axes_l = plt.subplots(nrows=2, ncols=4, sharey="row", figsize=(16, 9))
+    fig, axes_l = plt.subplots(nrows=2, ncols=4, sharey="row", figsize=(14, 9))
     #plt.subplots_adjust(hspace=0.1, wspace=0.1)
     #fig.set_size_inches(16, 9)
     # plt.subplots_adjust(bottom=1)
@@ -216,7 +216,7 @@ if __name__ == "__main__":
     
 
     # draw eps
-    with open("./output/error2.pickle", "rb") as f:
+    with open("./output/error_w.pickle", "rb") as f:
         error = pickle.load(f)
     #draw_heat_eps(error, datasets_list, epsilon_list)
     draw_heat_w(error, datasets_list, window_size_list)
