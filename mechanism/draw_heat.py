@@ -111,7 +111,7 @@ def draw_heat_w(error, datasetlist, window_size_list):
     font={'family':'Times New Roman', 'weight':'bold'}
     # 
     #matplotlib.rcParams.update({'font.size': 8})
-    fig, axes_l = plt.subplots(nrows=2, ncols=4, sharey="row", figsize=(14, 6))
+    fig, axes_l = plt.subplots(nrows=2, ncols=4, sharey="row", figsize=(14, 9))
     #plt.subplots_adjust(hspace=0.1, wspace=0.1)
     #fig.set_size_inches(16, 9)
     # plt.subplots_adjust(bottom=1)

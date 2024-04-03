@@ -52,7 +52,7 @@ def draw_radar_eps(error, datasetlist, epsilon_list):
             angles += angles[:1]
 
             if method_index == 0:
-                ax.plot(angles, stats, colors[method_index], linewidth=1.5, marker = 'o', ms=2)
+                ax.plot(angles, stats, colors[method_index], linewidth=2.5, marker = 'o', ms=2)
             else:
                 ax.plot(angles, stats, colors[method_index], linewidth=0.5, marker = 'o', ms=1)
                 
@@ -64,7 +64,7 @@ def draw_radar_eps(error, datasetlist, epsilon_list):
         
         ax.set_yticklabels([])
         ax.set_xticks(angles[:-1])
-        ax.set_xticklabels(datalist_shortname, size=10)
+        ax.set_xticklabels(datalist_shortname, size=12)
         
         if i == 0:
             ax.set_title('(a) ' + r'$\epsilon$=' + str(epsilon_list[2*i+2]), fontsize=15, fontdict=font)
@@ -72,16 +72,16 @@ def draw_radar_eps(error, datasetlist, epsilon_list):
             ax.set_title('(b) ' + r'$\epsilon$=' + str(epsilon_list[2*i+2]), fontsize=15, fontdict=font)
       
     plt.tight_layout()
-    plt.subplots_adjust(top=0.85, left=0.03, right=0.95, wspace=0.29, hspace=0.15)
+    plt.subplots_adjust(top=0.788, left=0.03, right=0.95, wspace=0.29, hspace=0.15)
 
     legend_ax = fig.add_axes([0.3, 0.9, 0.4, 0.1])
     # legend_ax = fig.add_axes([0.3, 0.45, 0.4, 0.1])
     legend_ax.axis('off')
 
     legend_handles = [plt.Line2D([0], [0], color=color, linewidth=1, linestyle='-') for color in colors]
-    legend_ax.legend(legend_handles, methods_name, loc='center', ncol=len(methods_name)//2, fontsize=8)
+    legend_ax.legend(legend_handles, methods_name, loc='center', bbox_to_anchor=(0.5, 0.4), ncol=len(methods_name)//2, fontsize=12)
 
-    fig.savefig("./fig/radar_count_query_eps.pdf")
+    fig.savefig("./fig/count_query_eps.pdf")
     plt.show()
     
     
@@ -134,7 +134,7 @@ def draw_radar_w(error, datasetlist, window_size_list):
             angles += angles[:1]
         
             if method_index == 0:
-                ax.plot(angles, stats, colors[method_index], linewidth=1.5, marker = 'o', ms=2)
+                ax.plot(angles, stats, colors[method_index], linewidth=2.5, marker = 'o', ms=2)
             else:
                 ax.plot(angles, stats, colors[method_index], linewidth=0.5, marker = 'o', ms=1)
                 
@@ -146,23 +146,23 @@ def draw_radar_w(error, datasetlist, window_size_list):
         
         ax.set_yticklabels([])
         ax.set_xticks(angles[:-1])
-        ax.set_xticklabels(datalist_shortname, size=10)
+        ax.set_xticklabels(datalist_shortname, size=12)
         if i == 0:
             ax.set_title('(a) w=' + str(window_size_list[2*i+1]), fontsize=15, fontdict=font)
         else:
             ax.set_title('(b) w=' + str(window_size_list[2*i+1]), fontsize=15, fontdict=font)
       
     plt.tight_layout()
-    plt.subplots_adjust(top=0.85, left=0.03, right=0.95, wspace=0.29, hspace=0.15)
+    plt.subplots_adjust(top=0.788, left=0.03, right=0.95, wspace=0.29, hspace=0.15)
     
     legend_ax = fig.add_axes([0.3, 0.9, 0.4, 0.1])
     # legend_ax = fig.add_axes([0.3, 0.45, 0.4, 0.1])
     legend_ax.axis('off')
 
     legend_handles = [plt.Line2D([0], [0], color=color, linewidth=1, linestyle='-') for color in colors]
-    legend_ax.legend(legend_handles, methods_name, loc='center', ncol=len(methods_name)//2, fontsize=8)
+    legend_ax.legend(legend_handles, methods_name, loc='center', bbox_to_anchor=(0.5, 0.4), ncol=len(methods_name)//2, fontsize=12)
 
-    fig.savefig("./fig/radar_count_query_w.pdf")
+    fig.savefig("./fig/count_query_w.pdf")
     plt.show()
             
             
@@ -184,10 +184,10 @@ if __name__ == "__main__":
     
 
     ########## draw eps ########
-    with open("./output/error_eps_count_query.pickle", "rb") as f:
+    with open("./output/error_w_count_query.pickle", "rb") as f:
         error = pickle.load(f)
         
-    draw_radar_eps(error, datasets_list, epsilon_list)    
+    draw_radar_w(error, datasets_list, window_size_list)    
         
     ########## draw w #########
     # with open("./output/error_w_count_query.pickle", "rb") as f:
