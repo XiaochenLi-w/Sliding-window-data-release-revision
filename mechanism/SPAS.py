@@ -132,7 +132,7 @@ def find_firstsample(eps_con, window_size):
 # The whole workflow of SPAS
 
 def SPAS_workflow(epsilon, sensitivity_s, sensitivity_p, raw_stream, window_size, windownum_warm, windownum_updateE, dim):
-    epsilon_s = epsilon / 4
+    epsilon_s = epsilon / 2
     epsilon_p = epsilon - epsilon_s
     eps_1 = epsilon_s / 2
     eps_2 = epsilon_s - eps_1
@@ -146,14 +146,14 @@ def SPAS_workflow(epsilon, sensitivity_s, sensitivity_p, raw_stream, window_size
     start_ = windownum_warm * window_size
     end_ = len(raw_stream)
     
-    rho_ = add_noise(sensitivity_s / dim, eps_1, [0], 1)
+    rho_ = add_noise(sensitivity_s, eps_1, [0], 1)
     for i in range(start_, end_):
         eps_remain = compute_epsremain(epsilon_p, eps_consumed, window_size)
         T_ = optimal_c * sensitivity_p / epsilon_p
         #T_ = 10 * sensitivity_p
 
         diff = count_dis(raw_stream[i], raw_stream[i - 1], dim)
-        v_ = add_noise(sensitivity_s / dim, eps_2 / (2 * optimal_c), [0], 1)
+        v_ = add_noise(sensitivity_s, eps_2 / (2 * optimal_c), [0], 1)
         
         first_sample_inwindow = find_firstsample(eps_consumed, window_size)
         if window_size - (i - first_sample_inwindow) <= int(eps_remain / (epsilon_p / optimal_c)):
