@@ -18,7 +18,9 @@ import matplotlib.pyplot as plt
     
 def run_evalu_spas(epsilon_list, sensitivity_s, sensitivity_p, window_size, windownum_warm, windownum_updateE, round_):
     methods_list = ['spas']
-    datasets_list = ["F1d", "Dth", "Uem", "syn_uniform", "syn_mix", "Fmd", "Tdv", "syn_multi", "Ret"]
+    #datasets_list = ["F1d", "Dth", "Uem", "syn_uniform", "syn_mix", "Fmd", "Tdv", "syn_multi", "Ret"]
+    datasets_list = ["F1d", "Dth", "Uem", "syn_uniform", "syn_mix"]
+    #datasets_list = ["Fmd", "Tdv", "syn_multi", "Ret"]
 
     err_all = []
     for i in range(len(datasets_list)):
@@ -31,6 +33,7 @@ def run_evalu_spas(epsilon_list, sensitivity_s, sensitivity_p, window_size, wind
         for j, method_name in enumerate(methods_list):
             err_tmp = run_def.run_method(method_name, epsilon_list, sensitivity_s, sensitivity_p, raw_stream, window_size, windownum_warm, windownum_updateE, round_)
             print(dataset_name, ":", err_tmp)
+            err_all[i][j] = err_tmp
         print('********dataset', datasets_list[i], 'Done!********')
 
     print(err_all)

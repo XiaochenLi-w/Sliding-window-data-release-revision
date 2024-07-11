@@ -10,20 +10,11 @@ def draw_heat_eps(error, datasetlist, epsilon_list):
     eval = "eps"
 
     font={'family':'Times New Roman', 'weight':'bold'}
-    # 
-    #matplotlib.rcParams.update({'font.size': 8})
     fig, axes_l = plt.subplots(nrows=2, ncols=4, sharey="row", figsize=(14, 9))
-    #plt.subplots_adjust(hspace=0.1, wspace=0.1)
-    #fig.set_size_inches(16, 9)
-    # plt.subplots_adjust(bottom=1)
-    # plt.tight_layout(h_pad=3.5)
-    # fig.set_size_inches(8, 4.8)
 
     data_min = [[0 for i in range(len(epsilon_list))] for j in range(len(datasetlist))]
     for i in range(len(error)):
         for j in range(len(error[i])):
-            # for k in range(len(error[i][j])):
-            #     if(error[i][j][k]<data_min[i][j]):
             data_min[i][j] = min(error[i][j])
 
     for i, axr in enumerate(axes_l):
@@ -43,8 +34,8 @@ def draw_heat_eps(error, datasetlist, epsilon_list):
             if j == 0:
                 ax.set_ylabel('Datasets', fontsize =15, fontdict=font)
                 
-                # datalist_shortname = ["Otp", "Dth", "Uem", "Syn1", "Syn2", "Flu", "Tdv", "Syn3", "Ret"]
-                datalist_shortname = ["Otp", "Dth", "Uem", "Syn1", "Syn2"]
+                datalist_shortname = ["Otp", "Dth", "Uem", "Syn1", "Syn2", "Flu", "Tdv", "Syn3", "Ret"]
+                #datalist_shortname = ["Otp", "Dth", "Uem", "Syn1"]
                 ax.set_yticks([i for i in range(len(datasetlist))])
                 ax.tick_params(left=True, right=False)
                 ax.set_yticklabels(datalist_shortname, fontsize = 10, fontdict=font)
@@ -61,7 +52,7 @@ def draw_heat_eps(error, datasetlist, epsilon_list):
             ax.grid(which="minor", color ="w", linestyle="-", linewidth=3)
             
             norm1 = mcolors.LogNorm(vmin=1E0, vmax=1E2)
-            im = ax.imshow(dataf, cmap='Reds', norm=norm1, aspect=0.5) # YlGn
+            im = ax.imshow(dataf, cmap='PuBu', norm=norm1, aspect=0.5) # YlGn
 
             for m in range(len(epsilon_list)):
                 for n in range(len(datasetlist)):
@@ -72,8 +63,7 @@ def draw_heat_eps(error, datasetlist, epsilon_list):
             methods_name = ["SPAS", "Sample", "Uniform", "DSAT", "FAST", "BD", "AdaPub", "PeGaSuS"]
             ax.set_title(methods_name[4 * i + j], fontsize=14, fontdict=font)
 
-    # fig, axes = plt.subplots(1, 1, figsize=(10, 5))
-    cax1 = fig.add_axes([0.82, 0.56, 0.01, 0.9 * ax.get_position().height])
+    cax1 = fig.add_axes([0.82, 0.53, 0.01, 0.9 * ax.get_position().height])
     clb1 = fig.colorbar(im, ax = axes_l,location="right", fraction=0.05, pad=0.1, cax=cax1)
     for l in clb1.ax.yaxis.get_ticklabels():
         l.set_family('Times New Roman')
@@ -81,7 +71,7 @@ def draw_heat_eps(error, datasetlist, epsilon_list):
     clb1.ax.set_title(r"$\delta_{MRE}$", fontsize=10, fontdict=font)
     # clb.ax.set_aspect(8)
 
-    cax2 = fig.add_axes([0.82, 0.26, 0.01, 0.9 * ax.get_position().height])
+    cax2 = fig.add_axes([0.82, 0.22, 0.01, 0.9 * ax.get_position().height])
     # formatter = mpl.ticker.StrMethodFormatter('{x:.0f}')
     clb2 = fig.colorbar(im, ax = axes_l, location="right", fraction=0.05, pad=0.1, cax=cax2)
     for l in clb2.ax.yaxis.get_ticklabels():
@@ -93,36 +83,21 @@ def draw_heat_eps(error, datasetlist, epsilon_list):
     clb2.update_ticks()
 
     fig.tight_layout()
-    fig.subplots_adjust(left=0.076, bottom=0.2, right=0.813, top=0.77, wspace=0.15, hspace=0)
+    fig.subplots_adjust(left=0.076, bottom=0.2, right=0.813, top=0.77, wspace=0.15, hspace=0.2)
 
     plt.show()
-    # fig.savefig("./fig/varying_eps.pdf")
-    fig.savefig("./fig/heat_count_query_eps.pdf")
-    
-    #fig.savefig("./new_fig/heat_" + d + "_" + eval + ".pdf")
-    
-    #fig.savefig("D:/W-dp-Streaming-Data-Publish-main/new_fig/" + "heat_color" + d + "_" + eval + ".pdf", pad_inches=0)
-    #fig.savefig("D:/" + "heat_color" + d + "_" + eval + ".png", pad_inches=0, dpi=3000)
-
+    #fig.savefig("./fig/heat_eps.pdf")
+  
 def draw_heat_w(error, datasetlist, window_size_list):
     # print(error[0])
     eval = "eps"
 
     font={'family':'Times New Roman', 'weight':'bold'}
-    # 
-    #matplotlib.rcParams.update({'font.size': 8})
     fig, axes_l = plt.subplots(nrows=2, ncols=4, sharey="row", figsize=(14, 9))
-    #plt.subplots_adjust(hspace=0.1, wspace=0.1)
-    #fig.set_size_inches(16, 9)
-    # plt.subplots_adjust(bottom=1)
-    # plt.tight_layout(h_pad=3.5)
-    # fig.set_size_inches(8, 4.8)
 
     data_min = [[0 for i in range(len(window_size_list))] for j in range(len(datasetlist))]
     for i in range(len(error)):
         for j in range(len(error[i])):
-            # for k in range(len(error[i][j])):
-            #     if(error[i][j][k]<data_min[i][j]):
             data_min[i][j] = min(error[i][j])
 
     for i, axr in enumerate(axes_l):
@@ -142,8 +117,8 @@ def draw_heat_w(error, datasetlist, window_size_list):
             if j == 0:
                 ax.set_ylabel('Datasets', fontsize =15, fontdict=font)
                 
-                # datalist_shortname = ["Otp", "Dth", "Uem", "Syn1", "Syn2", "Flu", "Tdv", "Syn3", "Ret"]
-                datalist_shortname = ["Otp", "Dth", "Uem", "Syn1", "Syn2"]
+                datalist_shortname = ["Otp", "Dth", "Uem", "Syn1", "Syn2", "Flu", "Tdv", "Syn3", "Ret"]
+                #datalist_shortname = ["Otp", "Dth", "Uem", "Syn1", "Syn2"]
                 ax.set_yticks([i for i in range(len(datasetlist))])
                 ax.tick_params(left=True, right=False)
                 ax.set_yticklabels(datalist_shortname, fontsize = 10, fontdict=font)
@@ -156,11 +131,11 @@ def draw_heat_w(error, datasetlist, window_size_list):
             for edge, spine in ax.spines.items():
                 spine.set_visible(False)
 
-            ax.set_xticklabels([40, 80, 120, 160, 200], fontsize = 10)
+            ax.set_xticklabels([80, 120, 160, 200, 240], fontsize = 10)
             ax.grid(which="minor", color ="w", linestyle="-", linewidth=3)
             
             norm1 = mcolors.LogNorm(vmin=1E0, vmax=1E2)
-            im = ax.imshow(dataf, cmap='Reds', norm=norm1, aspect=0.5) # YlGn
+            im = ax.imshow(dataf, cmap='PuBu', norm=norm1, aspect=0.5) # YlGn
 
             for m in range(len(window_size_list)):
                 for n in range(len(datasetlist)):
@@ -171,8 +146,7 @@ def draw_heat_w(error, datasetlist, window_size_list):
             methods_name = ["SPAS", "Sample", "Uniform", "DSAT", "FAST", "BD", "AdaPub", "PeGaSuS"]
             ax.set_title(methods_name[4 * i + j], fontsize=14, fontdict=font)
 
-    # fig, axes = plt.subplots(1, 1, figsize=(10, 5))
-    cax1 = fig.add_axes([0.82, 0.56, 0.01, 0.9 * ax.get_position().height])
+    cax1 = fig.add_axes([0.82, 0.53, 0.01, 0.9 * ax.get_position().height])
     clb1 = fig.colorbar(im, ax = axes_l,location="right", fraction=0.05, pad=0.1, cax=cax1)
     for l in clb1.ax.yaxis.get_ticklabels():
         l.set_family('Times New Roman')
@@ -180,8 +154,8 @@ def draw_heat_w(error, datasetlist, window_size_list):
     clb1.ax.set_title(r"$\delta_{MRE}$", fontsize=10, fontdict=font)
     # clb.ax.set_aspect(8)
 
-    cax2 = fig.add_axes([0.82, 0.26, 0.01, 0.9 * ax.get_position().height])
-    # formatter = mpl.ticker.StrMethodFormatter('{x:.0f}')
+    cax2 = fig.add_axes([0.82, 0.22, 0.01, 0.9 * ax.get_position().height])
+
     clb2 = fig.colorbar(im, ax = axes_l, location="right", fraction=0.05, pad=0.1, cax=cax2)
     for l in clb2.ax.yaxis.get_ticklabels():
         l.set_family('Times New Roman')
@@ -192,11 +166,10 @@ def draw_heat_w(error, datasetlist, window_size_list):
     clb2.update_ticks()
 
     fig.tight_layout()
-    # fig.subplots_adjust(left=0.076, bottom=0.258, right=0.813, top=0.775, wspace=0, hspace=0.379)
-    fig.subplots_adjust(left=0.076, bottom=0.2, right=0.813, top=0.77, wspace=0.15, hspace=0)
+    fig.subplots_adjust(left=0.076, bottom=0.2, right=0.813, top=0.77, wspace=0.15, hspace=0.2)
 
     plt.show()
-    fig.savefig("./fig/heat_count_query_w.pdf")
+    fig.savefig("./fig/heat_w.pdf")
 
 
 if __name__ == "__main__":
@@ -214,14 +187,14 @@ if __name__ == "__main__":
     # draw on real datasets
     #datasetlist = ["Uem", 'Out', 'syn_mix']
     #datasetlist = ['nation']
-    # datasets_list = ["F1d", "Dth", "Uem", "syn_uniform", "syn_mix", "Fmd", "Tdv", "Tpt", "Ret"]
-    datasets_list = ["F1d", "Dth", "Uem", "syn_uniform", "syn_mix"]
+    datasets_list = ["F1d", "Dth", "Uem", "syn_uniform", "syn_mix", "Fmd", "Tdv", "Tpt", "Ret"]
+    #datasets_list = ["F1d", "Dth", "Uem", "syn_uniform"]
     epsilon_list = [0.1, 0.3, 0.5, 0.7, 0.9]
-    window_size_list = [40, 80, 120, 160, 200]
+    window_size_list = [80, 120, 160, 200, 240]
     
 
     # draw eps
-    with open("./output/error_w.pickle", "rb") as f:
+    with open("./output/24.7.9/errorw4.pickle", "rb") as f:
         error = pickle.load(f)
-    draw_heat_eps(error, datasets_list, epsilon_list)
+    #draw_heat_eps(error, datasets_list, epsilon_list)
     draw_heat_w(error, datasets_list, window_size_list)

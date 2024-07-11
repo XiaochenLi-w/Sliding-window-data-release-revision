@@ -31,9 +31,14 @@ def count_vardis(histo_1, histo_2, dim):
     for i in range(dim):
         var_dis_sum += (histo_1[i]-histo_2[i]) ** 2
 
+    var_exp_sum = 0
+    for i in range(dim):
+        var_exp_sum += abs(histo_1[i]-histo_2[i])
+    var_exp_sum = var_exp_sum / dim
+
     var_avgdis = var_dis_sum / dim
 
-    return var_avgdis
+    return var_avgdis, var_exp_sum
 
 # Computer the average distance variance of a stream prefix
 
@@ -42,30 +47,34 @@ def agv_vardis(compute_num, window_size, published_stream, dim):
     num_var = 0
     total_ = window_size * compute_num
 
+    num_exp = 0
+
     # only count the distance bwtween the sampled data
     count_ = 0
     
     if length_ >= total_ + 1:
         for i in range(total_ - 1):
-            vardis = count_vardis(published_stream[length_ - 1 - i], published_stream[length_ - 2 - i], dim)
+            vardis, varexp = count_vardis(published_stream[length_ - 1 - i], published_stream[length_ - 2 - i], dim)
             if vardis > 0:
                 num_var += vardis
+                num_exp += varexp
                 count_ += 1
         if count_ == 0:
             return 0
         else:
-            return num_var / count_
+            return num_var / count_ - (num_exp / count_)**2
 
     else:
         for i in range(length_ - 2):
-            vardis = count_vardis(published_stream[length_ - 1 - i], published_stream[length_ - 2 - i], dim)
+            vardis, varexp = count_vardis(published_stream[length_ - 1 - i], published_stream[length_ - 2 - i], dim)
             if vardis > 0:
                 num_var += vardis
+                num_exp += varexp
                 count_ += 1
         if count_ == 0:
             return 0
         else:
-            return num_var / count_
+            return num_var / count_ - (num_exp / count_)**2
 
 # Update the optimal C
 # epsilon_p: total privacy budegt in a sliding window
@@ -132,7 +141,7 @@ def find_firstsample(eps_con, window_size):
 # The whole workflow of SPAS
 
 def SPAS_workflow(epsilon, sensitivity_s, sensitivity_p, raw_stream, window_size, windownum_warm, windownum_updateE, dim):
-    epsilon_s = epsilon / 2
+    epsilon_s = epsilon / 4
     epsilon_p = epsilon - epsilon_s
     eps_1 = epsilon_s / 2
     eps_2 = epsilon_s - eps_1

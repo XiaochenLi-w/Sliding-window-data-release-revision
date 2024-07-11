@@ -80,7 +80,7 @@ def run_all_count_query(epsilon_list, sensitivity_s, sensitivity_p, window_size,
                 err_all[i][k].append(err_tmp[k])
         print('********dataset', datasets_list[i], 'Done!********')
     
-    with open("./output/" + "error_eps_count_query.pickle", "wb") as f:
+    with open("./output/24.7.9/" + "error_eps_count_query.pickle", "wb") as f:
         pickle.dump(err_all, f)
 
     print(err_all)
@@ -104,7 +104,7 @@ def runw_all_count_query(epsilon, sensitivity_s, sensitivity_p, window_size_list
                 err_all[i][k].append(err_tmp[k])
         print('********dataset', datasets_list[i], 'Done!********')
     
-    with open("./output/" + "error_w_count_query.pickle", "wb") as f:
+    with open("./output/24.7.9/" + "error_w_count_query.pickle", "wb") as f:
         pickle.dump(err_all, f)
 
     print(err_all)
@@ -128,7 +128,7 @@ if __name__ == "__main__":
     query_num = 1000
 
     # run_all_sum_query(epsilon_list, sensitivity_s, sensitivity_p, window_size, windownum_warm, windownum_updateE, round_, query_num)
-    # run_all_count_query(epsilon_list, sensitivity_s, sensitivity_p, window_size, windownum_warm, windownum_updateE, round_, query_num)
-    runw_all_sum_query(epsilon, sensitivity_s, sensitivity_p, window_size_list, windownum_warm, windownum_updateE, round_, query_num)
+    #run_all_count_query(epsilon_list, sensitivity_s, sensitivity_p, window_size, windownum_warm, windownum_updateE, round_, query_num)
+    #runw_all_sum_query(epsilon, sensitivity_s, sensitivity_p, window_size_list, windownum_warm, windownum_updateE, round_, query_num)
     runw_all_count_query(epsilon, sensitivity_s, sensitivity_p, window_size_list, windownum_warm, windownum_updateE, round_, query_num)
     
